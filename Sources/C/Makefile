@@ -79,8 +79,8 @@ DOC_FILES = license_en-us.txt
 CC = gcc
 LD = gcc
 
-CFLAGS = -Wall
-LFLAGS = -Wall 
+CFLAGS = -Wall -m32
+LFLAGS = -Wall -m32
 
 
 ##############################################

@@ -39,13 +39,21 @@ On a Debian system this can be accomplished by running:
 $ sudo apt-get install autotools-dev autoconf git doxygen
 ```
 
-Now clone this repository to your local environment:
+Because GNUber relies on 32 bit libraries, if you are using a 64 bit system you will need gcc-multilib:
+
+```sh
+$ sudo apt-get install gcc-multilib
+```
+
+## Downloading and Configuring
+
+Clone this repository to your local environment:
 
 ```sh
 $ git clone https://github.com/cfelipe31/GU.git
 ```
 
-## Configuring
+
 
 ## Building
 
