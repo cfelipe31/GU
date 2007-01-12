@@ -10,4 +10,5 @@
 #No idea why those exist
 *.nfs*
 
-
+#Compiled binaries
+**/Binaries
