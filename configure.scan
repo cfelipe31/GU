@@ -1,0 +1,6 @@
+AC_INIT([GNUber], [1.0.0], [cfelipe.domingues@poli.ufrj.br], [www2.del.ufrj.br/carlos.oliveira/GU/index_en-us.html])
+AM_INIT_AUTOMAKE([foreign no-dist-gz dist-xz])
+
+AC_PROG_CC
+
+AC_OUTPUT([Makefile])
