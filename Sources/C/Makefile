@@ -59,6 +59,8 @@ gu:  $(GUOBJS)
 guUnitTests:  $(GUUNITTESTSOBJS)  
 	$(LD) $(LFLAGS) -o $@ $(GUUNITTESTSOBJS) -lcrypt
 
+all: $(EXECS)
+
 install: $(EXECS)
 	mkdir -p ../../Data
 	mkdir -p ../../Binaries
