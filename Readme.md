@@ -12,6 +12,19 @@ A preview of the current web interface can be found [here](http://www2.del.ufrj.
 
 # Installing
 
+## Supported Operating Systems
+
+GNUber requires external libraries that were pre-compiled to a few operating systems. Those are:
+
+- Ubuntu
+- FreeBSD
+- CentOS
+- Windows (Cygwin)
+
+GNUber will automatically detect your system and use the correct library during the build process.
+
+Unfortunately other operating systems are not supported at this moment.
+
 ## Meeting Dependencies
 
 First you will need to meet the required dependencies. Those are:
