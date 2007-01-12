@@ -44,10 +44,10 @@ endif
 ############################################
 
 #All HTML files will be copied to this path.
-HTML_PATH = ~public/html/GU
+HTML_PATH = ~/public/html/GU
 
 #All .cgi and supporting files will be copied to this path.
-CGI_PATH = ~public/html/GU/CGIs
+CGI_PATH = ~/public/html/GU/CGIs
 
 #CLI related files will be installed here.
 CLI_PATH = ../../Binaries
