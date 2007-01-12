@@ -10,7 +10,9 @@ Currently GNUber offers three different interfaces:
 
 A preview of the current web interface can be found [here](http://www2.del.ufrj.br/~carlos.oliveira/GU/index_en-us.html). 
 
-# Installation
+# Installing
+
+## Meeting Dependencies
 
 First you will need to meet the required dependencies. Those are:
 
@@ -30,3 +32,16 @@ Now clone this repository to your local environment:
 $ git clone https://github.com/cfelipe31/GU.git
 ```
 
+## Configuring
+
+## Building
+
+## Testing
+
+A test suite can be found under the directory /GU/Binaries. Run:
+
+```sh
+$ ./guUnitTests
+```
+
+As 29th February 2016 there are no known failling tests. If a test fails please [contact the developer](mailto:cfelipe.domingues@gmail.com) and copy the given error message on the email. 
