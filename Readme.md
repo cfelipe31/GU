@@ -66,3 +66,71 @@ $ ./guUnitTests
 ```
 
 As 29th February 2016 there are no known failling tests. If a test fails please [contact the developer](mailto:cfelipe.domingues@gmail.com) and copy the given error message on the email. 
+
+# Testing the web interface locally
+
+Install Apache 2 and the Python Apache module:
+
+```sh
+$ sudo apt-get install apache2 libapache2-mod-python
+```
+
+Go to the hmtl folder (defined in the Makefile as $(HTML_PATH)):
+
+```sh
+$ ~/public/html/GU
+```
+
+Open the Apache configuration file:
+
+```sh
+$ sudo vim /etc/apache2/apache2.conf
+```
+
+Add the lines:
+
+```sh
+
+LoadModule python_module modules/mod_python.so
+
+<Directory /home/USERNAME/public/html/GU>
+     Options ExecCGI
+     AllowOverride None
+     Order allow,deny
+     Allow from all
+     AddHandler cgi-script .cgi
+</Directory>
+
+```
+
+Enable the Apache module:
+
+```sh
+$ sudo a2enmod python
+```
+
+
+Open the Apache default settings file:
+
+```sh
+$ sudo vim /etc/apache2/sites-available/000-default.conf
+
+```
+
+
+Change DocumentRoot to /home/USERNAME/public/html/GU
+
+Restart Apache:
+
+```sh 
+$ sudo /etc/init.d/apache2 restart
+```
+
+Now you will be able to acess the index page on your browser at the address: http://0.0.0.0/index_en-us.html
+
+
+
+
+
+
+
