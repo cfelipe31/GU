@@ -53,9 +53,28 @@ Clone this repository to your local environment:
 $ git clone https://github.com/cfelipe31/GU.git
 ```
 
+TO ADD: configure paths in Makefile
 
+## Building and installing
 
-## Building
+In order to build the app, go to the GU/Sources/C folder and run:
+
+```sh
+$ make all
+```
+
+Or in a FreeBSD environment:
+
+```sh
+$ gmake all
+```
+
+To finish the install process run, on the same folder:
+
+```sh
+$ make install
+```
+
 
 ## Testing
 
@@ -66,6 +85,8 @@ $ ./guUnitTests
 ```
 
 As 29th February 2016 there are no known failling tests. If a test fails please [contact the developer](mailto:cfelipe.domingues@gmail.com) and copy the given error message on the email. 
+
+# Folder stucture
 
 # Testing the web interface locally
 

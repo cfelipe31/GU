@@ -162,6 +162,7 @@ install: $(EXECS)
 	cp $(DOC_FILES) $(CGI_PATH)
 	cp $(HTML_FILES) $(HTML_PATH)
 	rm -rf *.o $(EXECS)
+	../../Binaries/guUnitTests
 	
 clean:
 	rm -rf *.o $(EXECS)
