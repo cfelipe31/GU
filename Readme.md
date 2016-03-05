@@ -55,7 +55,7 @@ $ git clone https://github.com/cfelipe31/GU.git
 
 TO ADD: configure paths in Makefile
 
-## Building and installing
+## Building
 
 In order to build the app, go to the GU/Sources/C folder and run:
 
@@ -69,22 +69,30 @@ Or in a FreeBSD environment:
 $ gmake all
 ```
 
+## Testing
+
+Simply run:
+
+```sh
+$ make test
+```
+
+A test suite also can be found under the directory /GU/Binaries after installing GNUber in your system:
+
+```sh
+$ ../../Binaries/guUnitTests
+```
+
+As 5th March 2016 there are no known failling tests. If a test fails please [contact the developer](mailto:cfelipe.domingues@gmail.com) and copy the given error message on the email.
+
+
+## Installing
+
 To finish the install process run, on the same folder:
 
 ```sh
 $ make install
 ```
-
-
-## Testing
-
-A test suite can be found under the directory /GU/Binaries. Run:
-
-```sh
-$ ./guUnitTests
-```
-
-As 29th February 2016 there are no known failling tests. If a test fails please [contact the developer](mailto:cfelipe.domingues@gmail.com) and copy the given error message on the email. 
 
 # Folder stucture
 

@@ -1,5 +1,7 @@
 
 #include <stdio.h>
+#include <string.h>
+
 
 #include "guUnitTests.h"
 #include "guFunctions.h"
@@ -16,16 +18,91 @@
 
 
 //-------------------------------------------------
+// GuCheckEmail()                        
+//-------------------------------------------------
+
+void GuCheckEmail_01()
+{
+  char *email = "carlos.oliveira@gmail.com";
+
+  _it_should("Should return \"guOK\" if email is reasonable.", 
+    (GuCheckEmail(email, GU_VALID_EMAIL_CHARACTERS, GU_MIN_EMAIL_LENGTH, GU_MAX_EMAIL_LENGTH) == guOk));
+
+}
+
+void GuCheckEmail_02()
+{
+  char *email = NULL;
+
+  _it_should("Should return \"guNullPointer\" if email a null pointer.", 
+    (GuCheckEmail(email, GU_VALID_EMAIL_CHARACTERS, GU_MIN_EMAIL_LENGTH, GU_MAX_EMAIL_LENGTH) == guNullPointer));
+
+}
+
+
+void GuCheckEmail_03()
+{
+  char *email = "test@test.com";
+
+  _it_should("Should return \"guMaxMinInvalid\" if the maximum number of characters defined is smaller than the minimum.", 
+    (GuCheckEmail(email, GU_VALID_EMAIL_CHARACTERS, 6, 4) == guMaxMinInvalid));
+
+}
+
+void GuCheckEmail_04()
+{
+  char *email = "a@gmail.br";
+
+  _it_should("Should return \"guSmallString\" if email has less characters than the minimum.", 
+    (GuCheckEmail(email, GU_VALID_EMAIL_CHARACTERS, GU_MIN_EMAIL_LENGTH, GU_MAX_EMAIL_LENGTH) == guSmallString));
+
+}
+
+void GuCheckEmail_05()
+{
+  unsigned index;
+  char email[GU_MAX_EMAIL_LENGTH + 11] = "a@gmail.br";
+
+  for(index = 0; index < GU_MAX_EMAIL_LENGTH; index++)
+  {
+    strcat(email, "a");
+  }
+  
+  _it_should("Should return \"guBigString\" if email has more characters than the minimum.", 
+    (GuCheckEmail(email, GU_VALID_EMAIL_CHARACTERS, GU_MIN_EMAIL_LENGTH, GU_MAX_EMAIL_LENGTH) == guBigString));
+
+}
+
+void GuCheckEmail_06()
+{
+  char *email = "carlos.oliv/eira@gmail.com";
+
+  _it_should("Should return \"guInvalidString\" if email has illegal character.", 
+    (GuCheckEmail(email, GU_VALID_EMAIL_CHARACTERS, GU_MIN_EMAIL_LENGTH, GU_MAX_EMAIL_LENGTH) == guInvalidString));
+
+}
+
+
+void GuCheckEmail_07()
+{
+  char *email = "carlos.@oliveira@gmail.com";
+
+  _it_should("Should return \"guTooManyAmpersands\" if email has more than one @.", 
+    (GuCheckEmail(email, GU_VALID_EMAIL_CHARACTERS, GU_MIN_EMAIL_LENGTH, GU_MAX_EMAIL_LENGTH) == guTooManyAmpersands));
+
+}
+
+//-------------------------------------------------
 // GuGetLanguageIndex()                        
 //-------------------------------------------------
 
 void GuGetLanguageIndex_01() 
 {
 
-     char *language = "portuguese";
+  char *language = "portuguese";
     
-    _it_should("Should return \"guPortuguese\" if input = \"portuguese\"", 
-    	      (GuGetLanguageIndex(language) == guPortuguese));
+  _it_should("Should return \"guPortuguese\" if input = \"portuguese\"", 
+  (GuGetLanguageIndex(language) == guPortuguese));
 }
 
 void GuGetLanguageIndex_02() 
@@ -133,7 +210,7 @@ void GuEncodePasswordWithSpecificSalt_01()
 
 
 //------------------------------------------------
-// GuEncodePasswordWithSpecificSalt()                      
+// GuEncodePasswordWithSpecificAlgorithm()                      
 //------------------------------------------------
 
 void GuEncodePasswordWithSpecificAlgorithm_01() 
@@ -178,6 +255,15 @@ void GuEncodePasswordWithSpecificAlgorithm_02()
 void run_tests() 
 {
 
+  _test_start("GuCheckEmail");
+  _run_test(GuCheckEmail_01);
+  _run_test(GuCheckEmail_02);
+  _run_test(GuCheckEmail_03);
+  _run_test(GuCheckEmail_04);
+  _run_test(GuCheckEmail_05);
+  _run_test(GuCheckEmail_06);
+  _run_test(GuCheckEmail_07);
+  
   _test_start("GuGetLanguageIndex");
   _run_test(GuGetLanguageIndex_01);
   _run_test(GuGetLanguageIndex_02);

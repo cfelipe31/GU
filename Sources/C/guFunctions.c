@@ -59,12 +59,16 @@ GuCheckEmail (char *validatedString, char *validChars,
   /*Now looking for invalid chars in the string*/
   for (stringIndex = 0; stringIndex < strlen(validatedString); stringIndex++)
   {
+
     for (specificChar = 0; specificChar < strlen(validChars); specificChar++)
+    {  
+
       if (validChars[specificChar] == validatedString[stringIndex] || 
           validatedString[stringIndex] == '@')
         break;
+    }
     
-    if (validChars[specificChar] != validatedString[stringIndex])
+    if (validChars[specificChar] != validatedString[stringIndex] && validatedString[stringIndex] != '@' )
       return guInvalidString;
     
     if (validatedString[stringIndex] == '@')
