@@ -1,6 +1,10 @@
-
+//printf, remove
 #include <stdio.h>
+
+//malloc
 #include <stdlib.h>
+
+//strcat
 #include <string.h>
 
 
@@ -9,6 +13,7 @@
 #include "guFunctions.h"
 #include "guTypes.h"
 #include "guErrors.h"
+#include "guConfig.h"
 
 #define OK	0
 
@@ -17,20 +22,104 @@
 //If I create an unitialized pointer and pass it to a function 
 // then run it in test_run, it wont detect its unitialized unless
 // I explicitly define it as type *pointer = NULL
+//EDIT: This is not a bug, pointers in C are NOT guaranted to
+// be initialied as NULL!
 
 //-------------------------------------------------
 // GuAddUser()                        
 //-------------------------------------------------
 
-
+//Case when the user file does not exist.
 void GuAddUser_01()
 {
-  char *email = "carlos.oliveira@gmail.com";
+  FILE *usersFile;
 
-  _it_should("Should return \"guOK\" if email is reasonable.", 
-    (GuCheckEmail(email, GU_VALID_EMAIL_CHARACTERS, GU_MIN_EMAIL_LENGTH, GU_MAX_EMAIL_LENGTH) == guOk));
+  char fileContent[1000];
+
+  guUserDataType *userPointer;
+ 
+  guUserDataType user = {1 , guUsers, "Carlos Felipe Domingues e Oliveira", 
+                        "", "123456", "123456","cfelipe.domingues@gmail.com",
+                        "cfelipe.domingues@gmail.com", NULL, NULL};
+
+  guErrorType returnValue = 0;
+
+  //The "remove" function deletes a file
+  remove("users");
+
+  userPointer = &user;
+
+  GuAddUser(userPointer);
+
+  usersFile = fopen (GU_USER_DATA_FILENAME, "r");
+
+  fscanf (usersFile, "%s", fileContent);
+
+  fclose (usersFile);
+
+  _it_should("If the file \"users\" does not exist, it should be created and it should contain the admin data.", 
+    (returnValue == guOk));
+
+  printf(KCYN "    File content:\n    %s\n" KNRM, fileContent);
 
 }
+
+
+void GuAddUser_02()
+{
+  FILE *usersFile;
+
+  char *fileContent;
+
+  long length = 5000;
+
+  guUserDataType *userPointer;
+ 
+  guUserDataType user1 = {1 , guUsers, "Teste Boarque de Holanda", 
+                         "", "123456", "123456","teste.boarque@gmail.com",
+                         "teste.boarque@gmail.com", NULL, NULL};
+
+  guUserDataType user2 = {1 , guUsers, "Plinio Fraga de Almeida", 
+                         "", "123456", "123456","plinio@gmail.com",
+                         "plinio@gmail.com", NULL, NULL};
+
+  guUserDataType user3 = {1 , guUsers, "Pedro Ernesto Xavier", 
+                         "", "123456", "123456","pxavier@gmail.com",
+                         "pxavier@gmail.com", NULL, NULL};
+
+  guErrorType returnValue = 0;
+
+  userPointer = &user1;
+
+  GuAddUser(userPointer);
+
+  userPointer = &user2;
+
+  GuAddUser(userPointer);
+
+  userPointer = &user3;
+
+  GuAddUser(userPointer);
+
+  usersFile = fopen (GU_USER_DATA_FILENAME, "r");
+
+  fileContent = malloc(length);
+
+  fread (fileContent, 1, length, usersFile);
+
+  fclose (usersFile);
+
+  _it_should("If the file \"users\" does exist, it should add all the requisited users that have a non-null password field.", 
+    (returnValue == guOk));
+
+  printf(KCYN "    File content:\n    %s\n" KNRM, fileContent);
+
+  free(fileContent);
+}
+
+
+
+
 
 //-------------------------------------------------
 // GuCheckEmail()                        
@@ -502,6 +591,8 @@ void GuGetCryptAlgorithm_01()
  
   _it_should("Algorithm should be \"guDes\" for a valid Des encrypted password.", 
   (*algorithm == guDes));
+
+  free(algorithm);
 }
 
 void GuGetCryptAlgorithm_02() 
@@ -517,6 +608,8 @@ void GuGetCryptAlgorithm_02()
  
   _it_should("Algorithm should be \"guMd5\" for a valid Md5 encrypted password.", 
   (*algorithm == guMd5));
+
+  free(algorithm);
 }
 
 
@@ -533,6 +626,8 @@ void GuGetCryptAlgorithm_03()
  
   _it_should("Algorithm should be \"guSha256\" for a valid Sha256 encrypted password.", 
   (*algorithm == guSha256));
+
+  free(algorithm);
 }
 
 
@@ -549,6 +644,8 @@ void GuGetCryptAlgorithm_04()
  
   _it_should("Algorithm should be \"guSha512\" for a valid Sha512 encrypted password.", 
   (*algorithm == guSha512));
+
+  free(algorithm);
 }
 
 void GuGetCryptAlgorithm_05() 
@@ -563,7 +660,10 @@ void GuGetCryptAlgorithm_05()
  
   _it_should("Should return \"guInvalidCryptAlgorithm\" if the encrypted password has illegal characters.", 
   (GuGetCryptAlgorithm(password, algorithm) == guInvalidCryptAlgorithm));
+
+  free(algorithm);
 }
+
 
 
 void GuGetCryptAlgorithm_06() 
@@ -578,6 +678,8 @@ void GuGetCryptAlgorithm_06()
  
   _it_should("Should return \"guInvalidCryptAlgorithm\" if the salt specifies an unknown crypto algorithm.", 
   (GuGetCryptAlgorithm(password, algorithm) == guInvalidCryptAlgorithm));
+
+  free(algorithm);
 }
 
 //-------------------------------------------------
@@ -631,6 +733,11 @@ void GuGetLanguageIndex_04()
 void run_tests() 
 {
 
+  _test_start("GuAddUser");
+  _run_test(GuAddUser_01); 
+  _run_test(GuAddUser_02); 
+
+   /*
   _test_start("GuCheckEmail");
   _run_test(GuCheckEmail_01);
   _run_test(GuCheckEmail_02);
@@ -699,6 +806,8 @@ void run_tests()
   _run_test(GuGetLanguageIndex_02);
   _run_test(GuGetLanguageIndex_03);
   _run_test(GuGetLanguageIndex_04);
+  */
+
 }
 
 

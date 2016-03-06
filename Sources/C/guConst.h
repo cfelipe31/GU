@@ -53,6 +53,10 @@
 #define GU_MAX_USERNAME_LENGTH         				64 
 #endif /* #ifndef GU_MAX_USERNAME_LENGTH */
 
+#ifndef GU_SHA512_SALT_LENGTH
+#define GU_SHA512_SALT_LENGTH  						16 
+#endif /* #ifndef GU_SHA512_SALT_LENGTH */
+
 #ifndef GU_VALID_EMAIL_CHARACTERS
 #define GU_VALID_EMAIL_CHARACTERS  					"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.-_@" 
 #endif /* #ifndef GU_VALID_EMAIL_CHARACTERS */
@@ -70,7 +74,7 @@
 #endif /*#ifndef GU_VALID_SALT_CHARACTERS */ 
 
 #ifndef GU_VALID_USERNAME_CHARACTERS
-#define GU_VALID_USERNAME_CHARACTERS  				"abcdefghijklmnopqrstuvwxyz." 
+#define GU_VALID_USERNAME_CHARACTERS  				"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz " 
 #endif /* #ifndef GU_VALID_USERNAME_CHARACTERS */
 
 

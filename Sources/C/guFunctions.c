@@ -69,7 +69,9 @@ GuCheckEmail (char *validatedString, char *validChars,
     }
     
     if ((validChars[specificChar] != validatedString[stringIndex]) && (validatedString[stringIndex] != '@') )
+    {
       return guInvalidString;
+    }
     
     if (validatedString[stringIndex] == '@')
       ampersandCount++;
@@ -120,7 +122,9 @@ GuCheckNickname (char *validatedString, char *validChars,
         break;
     
     if ((validChars[specificChar] != validatedString[stringIndex]) && (validatedString[stringIndex] != '.'))
+    {
       return guInvalidString;
+    }
     
     if (validatedString[stringIndex] == '.')
       dotCount++;
@@ -162,10 +166,16 @@ GuCheckPassword (char *password, char *storedPassword)
   returnValue = GuGetCryptAlgorithm (storedPassword, algorithm);
 
   if (returnValue)
+  {
+    free(algorithm);
     return guInvalidCryptAlgorithm;
+  }
 
   if (*algorithm == guUnknownAlgorithm)
+  {
+    free(algorithm);
     return guInvalidCryptAlgorithm;
+  }
 
   strcpy(auxStoredPassword, storedPassword);
 
@@ -186,10 +196,14 @@ GuCheckPassword (char *password, char *storedPassword)
     salt[2] = '\0';
   }
 
+
+  free(algorithm);
+
   encryptedPassword = crypt(password, salt);
 
   if(encryptedPassword == NULL)
     return guInvalidSalt;
+
 
   if(strcmp(encryptedPassword, storedPassword) == 0)
   {
@@ -237,7 +251,10 @@ GuCheckStringField (char *validatedString, char *validChars,
       if (validChars[specificChar] == validatedString[stringIndex])
         break;
     if (validChars[specificChar] != validatedString[stringIndex])
+    {
       return guInvalidString;
+    }
+
   }
   
   return guOk;
@@ -270,7 +287,7 @@ GuCreateRandomString (char *validChar, unsigned long stringLength, char *generat
   {
     generatedString[stringLength-1] = validChar[rand()%( (unsigned)strlen(validChar))];
   }
-
+  
   return guOk;
 }
 
@@ -283,7 +300,7 @@ GuCreateNickname (char *name, char *firstNickname, char *secondNickname)
   char firstName[GU_MAX_USERNAME_LENGTH];
   char lastName[GU_MAX_USERNAME_LENGTH];
   char middleName[GU_MAX_USERNAME_LENGTH];
-
+  unsigned index =0;
 
   if (!name)
     return guNullPointer;
@@ -297,6 +314,12 @@ GuCreateNickname (char *name, char *firstNickname, char *secondNickname)
 
   /*strtok operates on the parsed string*/
   strcpy(auxCompleteName, name);
+
+  //convert complete name to lowercase
+  for(index = 0; auxCompleteName[index]; index++)
+  {
+    auxCompleteName[index] = tolower(auxCompleteName[index]);
+  }
 
   auxName = strtok(auxCompleteName, " ");
 

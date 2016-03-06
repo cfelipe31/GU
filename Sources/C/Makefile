@@ -99,7 +99,7 @@ GUCGISHOWREQUESTPWOBJS = guCgiShowRequestPasswordReset.c guUserInterface.o guFun
 
 GUOBJS = gu.o guFunctions.o 
 
-GUUNITTESTSOBJS = guUnitTests.o guFunctions.o
+GUUNITTESTSOBJS = guUnitTests.o guFunctions.o guAddUser.o
 
 
 ##############################################

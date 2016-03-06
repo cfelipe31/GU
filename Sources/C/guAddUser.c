@@ -19,39 +19,26 @@
 #include "guConst.h"		   // Several length constants
 #include "guFunctions.h"	   // guCreateStringFromUserData
 
-guErrorType guAddUser(guUserDataType *user)
+guErrorType GuAddUser(guUserDataType *user)
 {
  
   FILE *usersFile;
   guErrorType returnCode;	
 
-  /*Checking if our pointer argument exists*/
+  char firstNickname[GU_MAX_NICKNAME_LENGTH];
+  char secondNickname[GU_MAX_NICKNAME_LENGTH];
+  char *encryptedPassword;
+  char salt[GU_SHA512_SALT_LENGTH] = {0};
+  char sha512Salt[GU_SHA512_SALT_LENGTH + 4] = {0};
 
+  char currentChar;
+
+  unsigned lines = 0;
+
+  /*Checking if input is NULL*/
   if (!user)
     return guNullPointer;
 
-  /*Now we should check if our user's fields
-  are valid*/
-  
-  if (!(returnCode = GuCheckStringField(user->username, 
-  	                                    GU_VALID_USERNAME_CHARACTERS, 
-  	                                    GU_MIN_USERNAME_LENGTH,
-  	                                    GU_MAX_USERNAME_LENGTH)))
-  	return returnCode;
-
-
-  if (!(returnCode = GuCheckNickname(user->nickname, 
-  	                                 GU_VALID_NICKNAME_CHARACTERS, 
-  	                                 GU_MIN_NICKNAME_LENGTH,
-  	                                 GU_MAX_NICKNAME_LENGTH)))
-  	return returnCode;
-
-  if (!(returnCode = GuCheckEmail(user->email, 
-  	                              GU_VALID_EMAIL_CHARACTERS, 
-  	                              GU_MIN_EMAIL_LENGTH,
-  	                              GU_MAX_EMAIL_LENGTH)))
-  	return returnCode;
- 
 
   /*The way this function behaves depends on the prior
   existance of the users file*/
@@ -64,44 +51,167 @@ guErrorType guAddUser(guUserDataType *user)
      (b) : if either of the above mentioned fields is empty,
            we must invite the user by sending him/her an email.
      */
+    
+    fclose(usersFile);
 
-  	fclose(usersFile); 
+    printf("Users file  found!\n");
 
-   
-  	if(strcmp (user->password,""))
+    printf("password: %s\n", user->password);
+    if(strcmp(user->password, ""))
     {
-      /*option (b)*/
+      printf("User password not empty! Adding user!\n");
+      
+      returnCode = GuCheckStringField(user->username, 
+                                    GU_VALID_USERNAME_CHARACTERS, 
+                                    GU_MIN_USERNAME_LENGTH,
+                                    GU_MAX_USERNAME_LENGTH);
 
+      if(returnCode)
+        return returnCode;
+
+      //Creating nickname
+      returnCode = GuCreateNickname(user->username, firstNickname, 
+                                    secondNickname);
+    
+      if(returnCode)
+        return returnCode;
+
+      strcpy(user->nickname, firstNickname);
+ 
+      returnCode = GuCheckNickname(user->nickname, 
+                                 GU_VALID_NICKNAME_CHARACTERS, 
+                                 GU_MIN_NICKNAME_LENGTH,
+                                 GU_MAX_NICKNAME_LENGTH);
+    
+      if(returnCode)
+        return returnCode;
+
+      returnCode = GuCheckEmail(user->email, 
+                                    GU_VALID_EMAIL_CHARACTERS, 
+                                    GU_MIN_EMAIL_LENGTH,
+                                    GU_MAX_EMAIL_LENGTH);
+
+      if(returnCode)
+        return returnCode;
+
+      if(strcmp(user->email, user->emailCheck))
+        return guBadConfirmationEmail;
+
+      if(strcmp(user->password, user->passwordCheck))
+        return guBadConfirmationPassword;
+
+      user->profile = guUsers;
+    
+      returnCode = GuCreateRandomString(GU_VALID_SALT_CHARACTERS, GU_SHA512_SALT_LENGTH, salt);
+
+      if(returnCode)
+        return returnCode;
+
+      sprintf(sha512Salt, "$6$%s$", salt);
+
+      encryptedPassword = crypt(user->password, sha512Salt);
+
+     usersFile = fopen (GU_USER_DATA_FILENAME, "r");
+
+      while(!feof(usersFile))
+      {
+        currentChar = fgetc(usersFile);
+        if(currentChar == '\n')
+        {
+          lines++;
+        }
+      }
+
+      fclose(usersFile);
+
+      printf("Lines: %u\n", lines);
+     
+      user->id = (unsigned long long) lines + 1;
+
+      usersFile = fopen (GU_USER_DATA_FILENAME, "a");
+    
+      fprintf(usersFile, "\n%llu:%s:%s:%u:%s:%s", user->id, user->nickname, 
+              encryptedPassword, user->profile, user->username, user->email);
+    
+      fclose(usersFile); 
+
+      return guOk;
     }
     else
     {
-      /*option (a)*/
-      usersFile = fopen (GU_USER_DATA_FILENAME, "w");
-      
-      fprintf(usersFile, "%llu:%s:%s:%u:%s:%s", user->id, user->nickname, 
-      	      user->password, user->profile, user->username, user->email);
-      
-      fclose(usersFile); 
+      printf("User password empty! Inviting user!\n");
 
+
+      return guOk;      
     }
-  
 
   }
   else
   {
     /*If te users file does not exist, we must create it and add
     the current user as the system admin.*/
+
+    /*First we need to check if the admin data is correct*/
+    printf("Users file not found! Creating Admin account.\n");
+
+    returnCode = GuCheckStringField(user->username, 
+                                    GU_VALID_USERNAME_CHARACTERS, 
+                                    GU_MIN_USERNAME_LENGTH,
+                                    GU_MAX_USERNAME_LENGTH);
+
+    if(returnCode)
+      return returnCode;
+
+    //Creating nickname
+    returnCode = GuCreateNickname(user->username, firstNickname, secondNickname);
+    
+    if(returnCode)
+      return returnCode;
+
+    strcpy(user->nickname, firstNickname);
+ 
+    returnCode = GuCheckNickname(user->nickname, 
+                               GU_VALID_NICKNAME_CHARACTERS, 
+                               GU_MIN_NICKNAME_LENGTH,
+                               GU_MAX_NICKNAME_LENGTH);
+    
+    if(returnCode)
+      return returnCode;
+
+    returnCode = GuCheckEmail(user->email, 
+                                  GU_VALID_EMAIL_CHARACTERS, 
+                                  GU_MIN_EMAIL_LENGTH,
+                                  GU_MAX_EMAIL_LENGTH);
+
+    if(returnCode)
+      return returnCode;
+
+    if(strcmp(user->email, user->emailCheck))
+      return guBadConfirmationEmail;
+
+    if(strcmp(user->password, user->passwordCheck))
+      return guBadConfirmationPassword;
+
+    user->id = (unsigned long long) 0;
+
+    user->profile = guAdministrators;
+    
+    returnCode = GuCreateRandomString(GU_VALID_SALT_CHARACTERS, GU_SHA512_SALT_LENGTH, salt);
+
+    if(returnCode)
+      return returnCode;
+
+    sprintf(sha512Salt, "$6$%s$", salt);
+
+    encryptedPassword = crypt(user->password, sha512Salt);
+
     usersFile = fopen (GU_USER_DATA_FILENAME, "w");
     
-    fprintf(usersFile, "%llu:%s:%s:%u:%s:%s", (unsigned long long) 0, 
-    	    user->nickname, user->password, guAdmin, user->username, user->email);
+    fprintf(usersFile, "%llu:%s:%s:%u:%s:%s", user->id, user->nickname, 
+            encryptedPassword, user->profile, user->username, user->email);
     
     fclose(usersFile); 
-
-
   }
-  
-
   
   return guOk; 
 }

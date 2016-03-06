@@ -17,7 +17,7 @@
 #include "guTypes.h"
 
 
-guErrorType guAddUser(guUserDataType *);
+guErrorType GuAddUser(guUserDataType *);
 
 #endif /* #ifndef GU_ADD_USER_H */
 

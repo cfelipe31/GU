@@ -22,7 +22,7 @@ typedef enum {guEnglish, guPortuguese, guNumberLanguages} guLanguageType;
 
 typedef enum {guAdmin, guOwner, guHitchhiker} guGroupType;
 
-typedef enum {guAdminProfile} guProfileType;
+typedef enum {guAdministrators, guUsers} guProfileType;
 
 typedef unsigned long long guUserIdentifierType;
 
