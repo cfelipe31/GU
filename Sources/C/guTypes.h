@@ -16,7 +16,7 @@
 #include "guConst.h"
 
 
-typedef enum {guDes, guMd5, guSha256, guSha512} guCryptAlgorithms;
+typedef enum {guDes, guMd5, guSha256, guSha512, guUnknownAlgorithm} guCryptAlgorithms;
 
 typedef enum {guEnglish, guPortuguese, guNumberLanguages} guLanguageType;
 

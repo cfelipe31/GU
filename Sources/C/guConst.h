@@ -54,23 +54,23 @@
 #endif /* #ifndef GU_MAX_USERNAME_LENGTH */
 
 #ifndef GU_VALID_EMAIL_CHARACTERS
-#define GU_VALID_EMAIL_CHARACTERS  					"ABCDEFGHIJLMNPQRSTUVWXYZabcdefghijlmnopqrstuvwxyz0123456789.-_@" 
+#define GU_VALID_EMAIL_CHARACTERS  					"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.-_@" 
 #endif /* #ifndef GU_VALID_EMAIL_CHARACTERS */
 
 #ifndef GU_VALID_NICKNAME_CHARACTERS
-#define GU_VALID_NICKNAME_CHARACTERS  				"ABCDEFGHIJLMNPQRSTUVWXYZabcdefghijlmnopqrstuvwxyz0123456789.-_@" 
+#define GU_VALID_NICKNAME_CHARACTERS  				"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.-_@" 
 #endif /* #ifndef GU_VALID_EMAIL_CHARACTERS */ 
 
 #ifndef GU_VALID_PASSWORD_CHARACTERS
-#define GU_VALID_PASSWORD_CHARACTERS  				"ABCDEFGHIJLMNPQRSTUVWXYZabcdefghijlmnopqrstuvwxyz .-'\"(){}[]!?@#$%%&*/\\+=,;:" 
+#define GU_VALID_PASSWORD_CHARACTERS  				"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz .-'\"(){}[]!?@#$%%&*/\\+=,;:" 
 #endif /* #ifndef GU_VALID_PASSWORD_CHARACTERS */
 
 #ifndef GU_VALID_SALT_CHARACTERS
-#define GU_VALID_SALT_CHARACTERS					"ABCDEFGHIJLMNPQRSTUVWXYZabcdefghijlmnopqrstuvwxyz0123456789./" 
+#define GU_VALID_SALT_CHARACTERS					"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./" 
 #endif /*#ifndef GU_VALID_SALT_CHARACTERS */ 
 
 #ifndef GU_VALID_USERNAME_CHARACTERS
-#define GU_VALID_USERNAME_CHARACTERS  				"abcdefghijlmnopqrstuvwxyz." 
+#define GU_VALID_USERNAME_CHARACTERS  				"abcdefghijklmnopqrstuvwxyz." 
 #endif /* #ifndef GU_VALID_USERNAME_CHARACTERS */
 
 

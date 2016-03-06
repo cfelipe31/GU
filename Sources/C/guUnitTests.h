@@ -10,16 +10,17 @@
 
 
 int tests_run = 0;
+int functions_run =0;
 int tests_failed =0;
 int tests_passed =0;
 
-#define _test_start(functionName) do { printf("\n" KYLW "----Testing Function: %s ----" KNRM "\n", functionName); } while (0)
+#define _test_start(functionName) do { printf("\n" KYLW "----Testing Function: %s ----" KNRM "\n", functionName); functions_run++;} while (0)
 
 #define _it_should(message, test) do { if (!(test))  { printf(KRED "**FAIL**: %s" KNRM "\n", message); tests_failed++; } else { printf(KGRN "**PASS**: %s" KNRM "\n", message); tests_passed++; }} while (0)
 
 #define _run_test(test) do { test(); tests_run++; } while (0)
 
-#define _test_result() do { printf("\n" KYLW "----Test Result: %d tests executed,"KGRN" %d passed "KYLW","KRED" %d failed"KYLW" ----" KNRM "\n", tests_run, tests_passed, tests_failed); } while (0)
+#define _test_result() do { printf("\n" KYLW "----Test Result: %d tests executed in %d functions,"KGRN" %d passed "KYLW","KRED" %d failed"KYLW" ----" KNRM "\n", tests_run, functions_run, tests_passed, tests_failed); } while (0)
 
 
 

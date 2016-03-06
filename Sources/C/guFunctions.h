@@ -25,6 +25,9 @@ GuCheckEmail(char *, char *, size_t, size_t);
 guErrorType
 GuCheckNickname(char *, char *, size_t, size_t);
 
+guErrorType
+GuCheckPassword (char *, char *);
+
 guErrorType 
 GuCheckStringField(char *, char *, size_t, size_t);
 

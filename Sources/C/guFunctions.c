@@ -16,7 +16,7 @@
 
 /*sprintf*/
 #include <stdio.h>
-/*srand, rand*/
+/*srand, rand, malloc*/
 #include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
@@ -68,7 +68,7 @@ GuCheckEmail (char *validatedString, char *validChars,
         break;
     }
     
-    if (validChars[specificChar] != validatedString[stringIndex] && validatedString[stringIndex] != '@' )
+    if ((validChars[specificChar] != validatedString[stringIndex]) && (validatedString[stringIndex] != '@') )
       return guInvalidString;
     
     if (validatedString[stringIndex] == '@')
@@ -119,7 +119,7 @@ GuCheckNickname (char *validatedString, char *validChars,
           validChars[specificChar] == '.')
         break;
     
-    if (validChars[specificChar] != validatedString[stringIndex])
+    if ((validChars[specificChar] != validatedString[stringIndex]) && (validatedString[stringIndex] != '.'))
       return guInvalidString;
     
     if (validatedString[stringIndex] == '.')
@@ -130,6 +130,76 @@ GuCheckNickname (char *validatedString, char *validChars,
     return guTooManyDots;
 
   return guOk;
+}
+
+guErrorType
+GuCheckPassword (char *password, char *storedPassword)
+{
+  char *saltBegin;
+
+  char *saltEnd;
+
+  char *encryptedPassword;
+
+  char auxStoredPassword[GU_MAX_PASSWORD_LENGTH];
+
+  char salt[GU_MAX_PASSWORD_LENGTH];
+
+  guCryptAlgorithms *algorithm;
+
+  guErrorType returnValue = 0;
+
+  /*Checking inputs*/
+  if (!password)
+    return guNullPointer;
+  
+  if (!storedPassword)
+    return guNullPointer;
+
+
+  algorithm = (guCryptAlgorithms *) malloc (sizeof(guCryptAlgorithms));
+
+  returnValue = GuGetCryptAlgorithm (storedPassword, algorithm);
+
+  if (returnValue)
+    return guInvalidCryptAlgorithm;
+
+  if (*algorithm == guUnknownAlgorithm)
+    return guInvalidCryptAlgorithm;
+
+  strcpy(auxStoredPassword, storedPassword);
+
+  if(*algorithm >= 1 && *algorithm <= 3)
+  {
+
+    saltBegin = strtok(auxStoredPassword, "$");
+
+    saltEnd = strtok(NULL, "$");
+
+    sprintf(salt, "$%s$%s$", saltBegin, saltEnd);
+
+  }
+
+  if(*algorithm == 0)
+  {
+    strncpy(salt, storedPassword, 2);
+    salt[2] = '\0';
+  }
+
+  encryptedPassword = crypt(password, salt);
+
+  if(encryptedPassword == NULL)
+    return guInvalidSalt;
+
+  if(strcmp(encryptedPassword, storedPassword) == 0)
+  {
+    return guOk;
+  }
+  else
+  {
+    return guPasswordsDontMatch;
+  }
+
 }
 
 guErrorType 
@@ -229,9 +299,11 @@ GuCreateNickname (char *name, char *firstNickname, char *secondNickname)
   strcpy(auxCompleteName, name);
 
   auxName = strtok(auxCompleteName, " ");
+
   strcpy(firstName, auxName);
 
-  auxName = strtok(auxCompleteName, " ");
+  auxName = strtok(NULL, " ");
+
 
   if (!auxName)
     return guNoSurname;
@@ -240,22 +312,28 @@ GuCreateNickname (char *name, char *firstNickname, char *secondNickname)
 
   strcpy(middleName, lastName);
 
-  auxName = strtok(auxCompleteName, " ");
+  auxName = strtok(NULL, " ");
 
   if(!auxName)
   {
-    sprintf(firstNickname, "%s%s", firstName, middleName);
+    sprintf(firstNickname, "%s.%s", firstName, middleName);
     return guOk;
   }
 
-  while(!(auxName = strtok(auxCompleteName, " ")))
+  while(auxName !=  NULL)
   {
-   strcpy(middleName, lastName);
-   strcpy(lastName, auxName); 
+ 
+  if( !(  (strcmp(auxName,"e") == 0) || (strcmp(auxName,"de") == 0)  ))
+  {
+    strcpy(middleName, lastName);
+    strcpy(lastName, auxName); 
+  }
+  auxName = strtok(NULL, " ");
+
   }
 
-  sprintf(firstNickname, "%s%s", firstName, lastName);
-  sprintf(secondNickname, "%s%s", firstName, middleName);
+  sprintf(firstNickname, "%s.%s", firstName, lastName);
+  sprintf(secondNickname, "%s.%s", firstName, middleName);
 
   return guOk;
 }
@@ -312,6 +390,9 @@ GuEncodePasswordWithSpecificAlgorithm (char *password, guCryptAlgorithms algorit
 guErrorType
 GuEncodePasswordWithSpecificSalt (char *password, char *salt, char *encodedPassword)
 {
+
+  //TODO: CHECK SALT!!!
+
   char *encodedLocal;
 
   if(!password)
@@ -324,6 +405,9 @@ GuEncodePasswordWithSpecificSalt (char *password, char *salt, char *encodedPassw
     return guNullPointer;
 
   encodedLocal = crypt(password, salt);
+
+  if(encodedLocal == NULL)
+    return guInvalidSalt;
 
   strcpy(encodedPassword, encodedLocal);
 
@@ -338,7 +422,65 @@ guErrorType
 GuGetCryptAlgorithm (char *password, guCryptAlgorithms *algorithm)
 {
 
-  return guOk;
+  char *saltBegin;
+
+  char *saltEnd;
+
+  char auxPassword[GU_MAX_PASSWORD_LENGTH];
+
+  unsigned saltLength;
+
+  guErrorType returnValueBegin, returnValueEnd = 0;  
+
+  strcpy(auxPassword, password);
+
+  saltBegin = strtok(auxPassword, "$");
+
+  saltEnd = strtok(NULL, "$");
+
+  returnValueBegin = GuCheckStringField (saltBegin, 
+                                    GU_VALID_SALT_CHARACTERS,
+                                    GU_MIN_PASSWORD_LENGTH, 
+                                    GU_MAX_PASSWORD_LENGTH);
+
+  returnValueEnd = GuCheckStringField (saltEnd, 
+                                    GU_VALID_SALT_CHARACTERS,
+                                    GU_MIN_PASSWORD_LENGTH, 
+                                    GU_MAX_PASSWORD_LENGTH);
+
+  // In this case the salt has illegal characters
+  if(returnValueBegin == guInvalidString || returnValueEnd == guInvalidString)
+  {
+    *algorithm = guUnknownAlgorithm;
+    return guInvalidCryptAlgorithm;
+  }
+
+  if (strlen(saltBegin) == strlen (password))
+  {
+    *algorithm = guDes;
+    return guOk;
+  }
+
+  if (!strcmp(saltBegin, "1") && (strlen(saltEnd) == (unsigned) 8) )
+  {
+    *algorithm = guMd5;
+    return guOk;
+  }
+
+  if (!strcmp(saltBegin, "5") && (strlen(saltEnd) == (unsigned) 16) )
+  {
+    *algorithm = guSha256;
+    return guOk;
+  }
+
+  if (!strcmp(saltBegin, "6") && (strlen(saltEnd) == (unsigned) 16) )
+  {
+    *algorithm = guSha512;  
+    return guOk;
+  }
+
+  *algorithm = guUnknownAlgorithm;
+  return guInvalidCryptAlgorithm;
 }
 
 guLanguageType
