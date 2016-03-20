@@ -43,7 +43,7 @@ typedef struct{
   struct guUserDataType *next;
   struct guUserDataType *prev;
 
-}guUserDataType; 
+} guUserDataType; 
 
 #endif /* #ifndef GU_TYPES_H */
 

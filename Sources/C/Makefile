@@ -27,6 +27,7 @@ ifeq ($(UNAME), Linux)
 
   ifeq ($(DISTRO), Ubuntu)
     CGILIB = ./Libraries/libmlcgi.a.Ubuntu.12.x
+    $(Ubuntu) 
   endif
 
   ifeq ($(DISTRO), CentOS)
