@@ -65,7 +65,7 @@ main (int argc, char **argv)
   char languageString[GU_MAX_USERNAME_LENGTH];
 
   /*Return code : all functions*/
-  guErrorType returnValue;
+  //guErrorType returnValue;
 
   /*Nickname : Ncurses*/
   char nicknameString[GU_MAX_NICKNAME_LENGTH];
@@ -78,7 +78,7 @@ main (int argc, char **argv)
   guUserIdentifierType userId;
 
   /*Placeholder for user to be added/logged in*/
-  guUserDataType *user;
+  //guUserDataType *user;
   
 
   /*User Placeholder*/

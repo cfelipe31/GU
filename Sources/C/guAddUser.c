@@ -11,8 +11,11 @@
  */
 
 
+#define _XOPEN_SOURCE   600
+
 #include <stdio.h>             // File manipulation
 #include <string.h>            // Strcpy
+#include <unistd.h>
 
 #include "guAddUser.h"         // guAddUser prototype
 #include "guConfig.h"          // Admin id, GU_USER_DATA_FILENAME

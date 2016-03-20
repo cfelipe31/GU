@@ -384,7 +384,7 @@ void GuCheckStringField_02()
 
 void GuCheckStringField_03()
 {
-  char string = "carlosOliveira";
+  char *string = "carlosOliveira";
 
   _it_should("Should return \"guMaxMinInvalid\" if the maximum number of characters defined is smaller than the minimum.", 
     (GuCheckNickname(string, GU_VALID_NICKNAME_CHARACTERS, 6, 4) == guMaxMinInvalid));

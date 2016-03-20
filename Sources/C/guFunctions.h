@@ -31,6 +31,8 @@ GuCheckPassword (char *, char *);
 guErrorType 
 GuCheckStringField(char *, char *, size_t, size_t);
 
+guUserDataType *GuCreateListFromFile ();
+
 guErrorType
 GuCreateNickname (char *, char *, char *);
 

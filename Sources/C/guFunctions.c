@@ -20,6 +20,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
+/*tolower*/
+#include <ctype.h>
 
 /*time*/
 #include <time.h>
@@ -450,8 +452,6 @@ GuGetCryptAlgorithm (char *password, guCryptAlgorithms *algorithm)
   char *saltEnd;
 
   char auxPassword[GU_MAX_PASSWORD_LENGTH];
-
-  unsigned saltLength;
 
   guErrorType returnValueBegin, returnValueEnd = 0;  
 
