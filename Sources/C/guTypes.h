@@ -26,7 +26,7 @@ typedef enum {guAdministrators, guUsers} guProfileType;
 
 typedef unsigned long long guUserIdentifierType;
 
-typedef struct{
+typedef struct guUserDataType{
 
   guUserIdentifierType id;
   guProfileType profile;

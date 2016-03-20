@@ -270,11 +270,9 @@ guUserDataType *GuCreateListFromFile ()
 {
   FILE *usersFile;
   char buffer[2000];
-  guUserDataType *current = NULL; 
   guUserDataType *auxUser = NULL; 
   guUserDataType *head = NULL;
   char *auxString;
-  unsigned index;
 
   usersFile = fopen(GU_USER_DATA_FILENAME, "r");
   
@@ -318,8 +316,8 @@ guUserDataType *GuCreateListFromFile ()
     else
     {
       printf("oi2\n");
-      head->next = auxUser;
-      auxUser->prev = head;
+      head->next = (guUserDataType *) auxUser;
+      auxUser->prev = (guUserDataType *) head;
       head = auxUser;
     }
 
