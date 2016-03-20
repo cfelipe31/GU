@@ -51,7 +51,7 @@ void GuAddUser_01()
 
   GuAddUser(userPointer);
 
-  usersFile = fopen (GU_USER_DATA_FILENAME, "r");
+  usersFile = fopen (GU_USERS_DATA_FILENAME, "r");
 
   fscanf (usersFile, "%s", fileContent);
 
@@ -101,7 +101,7 @@ void GuAddUser_02()
 
   GuAddUser(userPointer);
 
-  usersFile = fopen (GU_USER_DATA_FILENAME, "r");
+  usersFile = fopen (GU_USERS_DATA_FILENAME, "r");
 
   fileContent = malloc(length);
 

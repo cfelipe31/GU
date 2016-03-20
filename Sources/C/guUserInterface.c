@@ -31,7 +31,7 @@ static char *guNcursesUserInterfaceMessages[2][2] = {
                                                       }
                                                     };
 
-static char *guWebUserInterfaceMessages[2][14] = {
+static char *guWebUserInterfaceMessages[2][15] = {
                                                   {"Welcome to GNUber! - The free Open Source carpooling app\n",
                                                    "by",
                                                    "Username",
@@ -46,6 +46,8 @@ static char *guWebUserInterfaceMessages[2][14] = {
                                                    "license_en-us.txt",
                                                    "Confirm",
                                                    "Request Membership"
+                                                   "Friend Email"
+
                                                   },
 
                                                   {"Bem vindo ao GNUber! - O aplicativo de caronas gratuito e Open Source\n",
@@ -62,6 +64,7 @@ static char *guWebUserInterfaceMessages[2][14] = {
                                                    "license_pt-br.txt",
                                                    "Confirme seu ",
                                                    "Requerer Inscricao"
+                                                   "Email do Amigo"
                                                   },
 
                                                 };

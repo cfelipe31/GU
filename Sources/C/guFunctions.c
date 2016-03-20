@@ -274,7 +274,7 @@ guUserDataType *GuCreateListFromFile ()
   guUserDataType *head = NULL;
   char *auxString;
 
-  usersFile = fopen(GU_USER_DATA_FILENAME, "r");
+  usersFile = fopen(GU_USERS_DATA_FILENAME, "r");
   
 
   //Go through each user

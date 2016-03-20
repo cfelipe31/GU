@@ -69,6 +69,18 @@
 #define GU_USERS_DATA_FILENAME 							"users" 
 #endif /* #ifndef GU_USERS_DATA_FILENAME */
 
+#ifndef GU_INVITED_USERS_DATA_FILENAME
+#define GU_INVITED_USERS_DATA_FILENAME 					"invited.users" 
+#endif /* #ifndef GU_INVITED_USERS_DATA_FILENAME */
+
+#ifndef GU_REQUESTING_USERS_DATA_FILENAME
+#define GU_REQUESTING_USERS_DATA_FILENAME 				"requesting.users" 
+#endif /* #ifndef GU_REQUESTING_USERS_DATA_FILENAME */
+
+#ifndef GU_LOCKED_USERS_DATA_FILENAME
+#define GU_LOCKED_USERS_DATA_FILENAME 					"locked_users" 
+#endif /* #ifndef GU_LOCKED_USERS_DATA_FILENAME */
+
 #ifndef GU_WEB_SERVER_URL
 #define GU_WEB_SERVER_URL 								"http://www02.del.ufrj.br/~carlos.oliveira/GU/index_en-us.html"
 #endif /* #ifndef GU_WEB_SERVER_URL */ 
