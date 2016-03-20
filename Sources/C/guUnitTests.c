@@ -425,6 +425,41 @@ void GuCheckStringField_06()
 
 }
 
+//------------------------------------------------
+// GuCreateListFromFile()                      
+//------------------------------------------------
+
+void GuCreateListFromFile_01() 
+{
+    
+    guUserDataType *current;
+    guUserDataType *head;
+
+
+    head = GuCreateListFromFile();
+    
+    _it_should("Should return \"guOk\" if all parameters are reasonable.", 
+            (1));
+
+    current = head;
+
+    while(current->prev != NULL)
+    {
+      printf("Email: %s \n", current->email);
+      current = current->prev;
+    }
+
+    printf("Email: %s \n", current->email);
+
+    current = head;
+
+    while(head != NULL)
+    {
+      current = head;
+      head = head->prev;
+      free(current);
+    }
+}
 
 
 //------------------------------------------------
@@ -773,7 +808,12 @@ void run_tests()
   _run_test(GuCheckStringField_04);
   _run_test(GuCheckStringField_05);
   _run_test(GuCheckStringField_06);
+  */
 
+  _test_start("GuCreateListFromFile");
+  _run_test(GuCreateListFromFile_01); 
+  
+  /*
   _test_start("GuCreateRandomString");
   _run_test(GuCreateRandomString_01);
   _run_test(GuCreateRandomString_02);

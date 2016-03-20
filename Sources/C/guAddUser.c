@@ -26,7 +26,7 @@ guErrorType GuAddUser(guUserDataType *user)
 {
  
   FILE *usersFile;
-  guErrorType returnCode;	
+  guErrorType returnCode; 
 
   char firstNickname[GU_MAX_NICKNAME_LENGTH];
   char secondNickname[GU_MAX_NICKNAME_LENGTH];
@@ -114,7 +114,7 @@ guErrorType GuAddUser(guUserDataType *user)
 
       encryptedPassword = crypt(user->password, sha512Salt);
 
-     usersFile = fopen (GU_USER_DATA_FILENAME, "r");
+      usersFile = fopen (GU_USER_DATA_FILENAME, "r");
 
       while(!feof(usersFile))
       {
@@ -133,7 +133,7 @@ guErrorType GuAddUser(guUserDataType *user)
 
       usersFile = fopen (GU_USER_DATA_FILENAME, "a");
     
-      fprintf(usersFile, "\n%llu:%s:%s:%u:%s:%s", user->id, user->nickname, 
+      fprintf(usersFile, "\n%llu:%s:%s:%u:%s:%s:", user->id, user->nickname, 
               encryptedPassword, user->profile, user->username, user->email);
     
       fclose(usersFile); 
@@ -151,7 +151,7 @@ guErrorType GuAddUser(guUserDataType *user)
   }
   else
   {
-    /*If te users file does not exist, we must create it and add
+    /*If the users file does not exist, we must create it and add
     the current user as the system admin.*/
 
     /*First we need to check if the admin data is correct*/
@@ -210,7 +210,7 @@ guErrorType GuAddUser(guUserDataType *user)
 
     usersFile = fopen (GU_USER_DATA_FILENAME, "w");
     
-    fprintf(usersFile, "%llu:%s:%s:%u:%s:%s", user->id, user->nickname, 
+    fprintf(usersFile, "%llu:%s:%s:%u:%s:%s:", user->id, user->nickname, 
             encryptedPassword, user->profile, user->username, user->email);
     
     fclose(usersFile); 
