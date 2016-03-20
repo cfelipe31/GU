@@ -45,7 +45,7 @@ static char *guWebUserInterfaceMessages[2][15] = {
                                                    "Need help?",
                                                    "license_en-us.txt",
                                                    "Confirm",
-                                                   "Request Membership"
+                                                   "Request Membership",
                                                    "Friend Email"
 
                                                   },
@@ -63,7 +63,7 @@ static char *guWebUserInterfaceMessages[2][15] = {
                                                    "Precisa de ajuda?",
                                                    "license_pt-br.txt",
                                                    "Confirme seu ",
-                                                   "Requerer Inscricao"
+                                                   "Requerer Inscricao",
                                                    "Email do Amigo"
                                                   },
 
