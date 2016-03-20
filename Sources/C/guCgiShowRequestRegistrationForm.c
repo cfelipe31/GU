@@ -80,6 +80,14 @@ main (int argc, char **argv)
   printf ("      <input name=\"guEmailConfirmation\""
                 "type=\"text\" maxlength=\"%u\"/><br><br>\n",
                  GU_MAX_EMAIL_LENGTH);
+
+
+  printf ("      <br/> %s:<br/>\n",
+                 GuGetWebUserInterfaceMessage(guFriendEmail,language));
+  printf ("      <input name=\"guFriendEmail\""
+                "type=\"text\" maxlength=\"%u\"/><br><br>\n",
+                 GU_MAX_EMAIL_LENGTH);
+
   printf ("      <input type=\"submit\" value=\"%s\">",
                  GuGetWebUserInterfaceMessage(guRequestMessage,language));
   printf ("      <input type=\"hidden\" name=\"guLanguage\""

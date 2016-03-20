@@ -11,6 +11,7 @@
  */
 
 
+#define GU_DEBUG
 #define _XOPEN_SOURCE   600
 
 /*sprintf*/
@@ -19,14 +20,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
+/*tolower*/
+#include <ctype.h>
 
 /*time*/
 #include <time.h>
 #include <unistd.h>
 
 #include "guFunctions.h"
-#include "guConfig.h"          // Admin id, GU_USER_DATA_FILENAME
-
+#include "guConfig.h"
 
 guErrorType 
 GuCheckEmail (char *validatedString, char *validChars,
@@ -268,13 +270,11 @@ guUserDataType *GuCreateListFromFile ()
 {
   FILE *usersFile;
   char buffer[2000];
-  guUserDataType *current = NULL; 
   guUserDataType *auxUser = NULL; 
   guUserDataType *head = NULL;
   char *auxString;
-  unsigned index;
 
-  usersFile = fopen(GU_USER_DATA_FILENAME, "r");
+  usersFile = fopen(GU_USERS_DATA_FILENAME, "r");
   
 
   //Go through each user
@@ -289,6 +289,8 @@ guUserDataType *GuCreateListFromFile ()
     auxString = strtok(NULL, ":");
 
     strcpy(auxUser->nickname, auxString);
+    
+    printf("Nickname: %s\n",auxString);
 
     auxString = strtok(NULL, ":");
 
@@ -308,12 +310,14 @@ guUserDataType *GuCreateListFromFile ()
 
     if(head == NULL)
     {
+      printf("oi\n");
       head = auxUser;
     }
     else
     {
-      head->next = auxUser;
-      auxUser->prev = head;
+      printf("oi2\n");
+      head->next = (guUserDataType *) auxUser;
+      auxUser->prev = (guUserDataType *) head;
       head = auxUser;
     }
 
@@ -321,7 +325,6 @@ guUserDataType *GuCreateListFromFile ()
 
   return head;
 }
-
 
 guErrorType 
 GuCreateRandomString (char *validChar, unsigned long stringLength, char *generatedString)
@@ -513,8 +516,6 @@ GuGetCryptAlgorithm (char *password, guCryptAlgorithms *algorithm)
   char *saltEnd;
 
   char auxPassword[GU_MAX_PASSWORD_LENGTH];
-
-  unsigned saltLength;
 
   guErrorType returnValueBegin, returnValueEnd = 0;  
 

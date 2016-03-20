@@ -9,23 +9,24 @@
  *$Date$
  *$Log$
  */
-//#define _XOPEN_SOURCE   600
+
+
+#define _XOPEN_SOURCE   600
 
 #include <stdio.h>             // File manipulation
 #include <string.h>            // Strcpy
-#include <unistd.h>            //Crypt
+#include <unistd.h>
+
 #include "guAddUser.h"         // guAddUser prototype
-#include "guConfig.h"          // Admin id, GU_USERS_DATA_FILENAME
-#include "guConst.h"		       // Several length constants
-#include "guFunctions.h"	     // guCreateStringFromUserData
-
-
+#include "guConfig.h"          // Admin id, GU_USER_DATA_FILENAME
+#include "guConst.h"       // Several length constants
+#include "guFunctions.h"     // guCreateStringFromUserData
 
 guErrorType GuAddUser(guUserDataType *user)
 {
  
   FILE *usersFile;
-  guErrorType returnCode;	
+  guErrorType returnCode; 
 
   char firstNickname[GU_MAX_NICKNAME_LENGTH];
   char secondNickname[GU_MAX_NICKNAME_LENGTH];

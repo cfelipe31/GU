@@ -15,7 +15,7 @@
 #include "guErrors.h"
 #include "guConfig.h"
 
-#define OK	0
+#define OK  0
 
 //BUGS: 
 
@@ -51,7 +51,7 @@ void GuAddUser_01()
 
   GuAddUser(userPointer);
 
-  usersFile = fopen (GU_USER_DATA_FILENAME, "r");
+  usersFile = fopen (GU_USERS_DATA_FILENAME, "r");
 
   fscanf (usersFile, "%s", fileContent);
 
@@ -60,7 +60,7 @@ void GuAddUser_01()
   _it_should("If the file \"users\" does not exist, it should be created and it should contain the admin data.", 
     (returnValue == guOk));
 
-  printf(KCYN "    File content:\n%s\n" KNRM, fileContent);
+  printf(KCYN "    File content:\n    %s\n" KNRM, fileContent);
 
 }
 
@@ -101,7 +101,7 @@ void GuAddUser_02()
 
   GuAddUser(userPointer);
 
-  usersFile = fopen (GU_USER_DATA_FILENAME, "r");
+  usersFile = fopen (GU_USERS_DATA_FILENAME, "r");
 
   fileContent = malloc(length);
 
@@ -112,7 +112,7 @@ void GuAddUser_02()
   _it_should("If the file \"users\" does exist, it should add all the requisited users that have a non-null password field.", 
     (returnValue == guOk));
 
-  printf(KCYN "    File content:\n%s\n" KNRM, fileContent);
+  printf(KCYN "    File content:\n    %s\n" KNRM, fileContent);
 
   free(fileContent);
 }
@@ -384,7 +384,7 @@ void GuCheckStringField_02()
 
 void GuCheckStringField_03()
 {
-  char string = "carlosOliveira";
+  char *string = "carlosOliveira";
 
   _it_should("Should return \"guMaxMinInvalid\" if the maximum number of characters defined is smaller than the minimum.", 
     (GuCheckNickname(string, GU_VALID_NICKNAME_CHARACTERS, 6, 4) == guMaxMinInvalid));
@@ -425,7 +425,6 @@ void GuCheckStringField_06()
 
 }
 
-
 //------------------------------------------------
 // GuCreateListFromFile()                      
 //------------------------------------------------
@@ -449,6 +448,8 @@ void GuCreateListFromFile_01()
       printf("Email: %s \n", current->email);
       current = current->prev;
     }
+
+    printf("Email: %s \n", current->email);
 
     current = head;
 
@@ -601,7 +602,7 @@ void GuEncodePasswordWithSpecificSalt_01()
      char encodedPassword[150] = {0};
     
     _it_should("Should return \"guOk\" if all parameters are reasonable", 
-    	      (GuEncodePasswordWithSpecificSalt (password, salt, encodedPassword) == guOk));
+            (GuEncodePasswordWithSpecificSalt (password, salt, encodedPassword) == guOk));
 
     printf(KCYN "    Salt: <%s>  Password: <%s> Encoded password: <%s>\n" KNRM,salt, password, encodedPassword);
 
@@ -789,7 +790,6 @@ void run_tests()
   _run_test(GuCheckNickname_05);
   _run_test(GuCheckNickname_06);
   _run_test(GuCheckNickname_07);
-
   _test_start("GuCheckPassword");
   _run_test(GuCheckPassword_01);
   _run_test(GuCheckPassword_02);
@@ -799,7 +799,6 @@ void run_tests()
   _run_test(GuCheckPassword_06);
   _run_test(GuCheckPassword_07);
   _run_test(GuCheckPassword_08);
-
   _test_start("GuCheckStringField");
   _run_test(GuCheckStringField_01);
   _run_test(GuCheckStringField_02);
@@ -807,29 +806,27 @@ void run_tests()
   _run_test(GuCheckStringField_04);
   _run_test(GuCheckStringField_05);
   _run_test(GuCheckStringField_06);
-   */
+  */
+
   _test_start("GuCreateListFromFile");
   _run_test(GuCreateListFromFile_01); 
   
-   /*
-  _test_start("GuCreateNickname");
-  _run_test(GuCreateNickname_01);
-  _run_test(GuCreateNickname_02);
-
+  /*
   _test_start("GuCreateRandomString");
   _run_test(GuCreateRandomString_01);
   _run_test(GuCreateRandomString_02);
   _run_test(GuCreateRandomString_03);    
   _run_test(GuCreateRandomString_04); 
-  //TODO: Use string checker function for better tests  
-
+  //TODO: Use string checker function for better tests
+  
+  _test_start("GuCreateNickname");
+  _run_test(GuCreateNickname_01);
+  _run_test(GuCreateNickname_02);
   _test_start("GuEncodePasswordWithSpecificAlgorithm");
   _run_test(GuEncodePasswordWithSpecificAlgorithm_01);
   _run_test(GuEncodePasswordWithSpecificAlgorithm_02);
-
   _test_start("GuEncodePasswordWithSpecificSalt");
   _run_test(GuEncodePasswordWithSpecificSalt_01);
-
   _test_start("GuGetCryptAlgorithm");
   _run_test(GuGetCryptAlgorithm_01);
   _run_test(GuGetCryptAlgorithm_02);
@@ -837,7 +834,6 @@ void run_tests()
   _run_test(GuGetCryptAlgorithm_04);
   _run_test(GuGetCryptAlgorithm_05);
   _run_test(GuGetCryptAlgorithm_06);
-
   _test_start("GuGetLanguageIndex");
   _run_test(GuGetLanguageIndex_01);
   _run_test(GuGetLanguageIndex_02);
@@ -857,5 +853,3 @@ int main(int argc, char **argv)
 
   return OK;
 }
-
-
