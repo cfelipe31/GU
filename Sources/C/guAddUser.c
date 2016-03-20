@@ -9,15 +9,17 @@
  *$Date$
  *$Log$
  */
-
+#define _XOPEN_SOURCE   600
 
 #include <stdio.h>             // File manipulation
 #include <string.h>            // Strcpy
-
+#include <unistd.h>            //Crypt
 #include "guAddUser.h"         // guAddUser prototype
-#include "guConfig.h"          // Admin id, GU_USER_DATA_FILENAME
-#include "guConst.h"		   // Several length constants
-#include "guFunctions.h"	   // guCreateStringFromUserData
+#include "guConfig.h"          // Admin id, GU_USERS_DATA_FILENAME
+#include "guConst.h"		       // Several length constants
+#include "guFunctions.h"	     // guCreateStringFromUserData
+
+
 
 guErrorType GuAddUser(guUserDataType *user)
 {
@@ -43,7 +45,7 @@ guErrorType GuAddUser(guUserDataType *user)
   /*The way this function behaves depends on the prior
   existance of the users file*/
 
-  if ((usersFile = fopen(GU_USER_DATA_FILENAME, "r")))
+  if ((usersFile = fopen(GU_USERS_DATA_FILENAME, "r")))
   {
      /*If the users file already exists, there are two options:
      (a) : if user->password and user->password check !=NULL,
@@ -111,7 +113,7 @@ guErrorType GuAddUser(guUserDataType *user)
 
       encryptedPassword = crypt(user->password, sha512Salt);
 
-     usersFile = fopen (GU_USER_DATA_FILENAME, "r");
+      usersFile = fopen (GU_USERS_DATA_FILENAME, "r");
 
       while(!feof(usersFile))
       {
@@ -128,9 +130,9 @@ guErrorType GuAddUser(guUserDataType *user)
      
       user->id = (unsigned long long) lines + 1;
 
-      usersFile = fopen (GU_USER_DATA_FILENAME, "a");
+      usersFile = fopen (GU_USERS_DATA_FILENAME, "a");
     
-      fprintf(usersFile, "\n%llu:%s:%s:%u:%s:%s", user->id, user->nickname, 
+      fprintf(usersFile, "\n%llu:%s:%s:%u:%s:%s:", user->id, user->nickname, 
               encryptedPassword, user->profile, user->username, user->email);
     
       fclose(usersFile); 
@@ -148,7 +150,7 @@ guErrorType GuAddUser(guUserDataType *user)
   }
   else
   {
-    /*If te users file does not exist, we must create it and add
+    /*If the users file does not exist, we must create it and add
     the current user as the system admin.*/
 
     /*First we need to check if the admin data is correct*/
@@ -205,9 +207,9 @@ guErrorType GuAddUser(guUserDataType *user)
 
     encryptedPassword = crypt(user->password, sha512Salt);
 
-    usersFile = fopen (GU_USER_DATA_FILENAME, "w");
+    usersFile = fopen (GU_USERS_DATA_FILENAME, "w");
     
-    fprintf(usersFile, "%llu:%s:%s:%u:%s:%s", user->id, user->nickname, 
+    fprintf(usersFile, "%llu:%s:%s:%u:%s:%s:", user->id, user->nickname, 
             encryptedPassword, user->profile, user->username, user->email);
     
     fclose(usersFile); 

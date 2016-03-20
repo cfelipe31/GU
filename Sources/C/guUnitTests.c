@@ -60,7 +60,7 @@ void GuAddUser_01()
   _it_should("If the file \"users\" does not exist, it should be created and it should contain the admin data.", 
     (returnValue == guOk));
 
-  printf(KCYN "    File content:\n    %s\n" KNRM, fileContent);
+  printf(KCYN "    File content:\n%s\n" KNRM, fileContent);
 
 }
 
@@ -112,7 +112,7 @@ void GuAddUser_02()
   _it_should("If the file \"users\" does exist, it should add all the requisited users that have a non-null password field.", 
     (returnValue == guOk));
 
-  printf(KCYN "    File content:\n    %s\n" KNRM, fileContent);
+  printf(KCYN "    File content:\n%s\n" KNRM, fileContent);
 
   free(fileContent);
 }
@@ -425,6 +425,40 @@ void GuCheckStringField_06()
 
 }
 
+
+//------------------------------------------------
+// GuCreateListFromFile()                      
+//------------------------------------------------
+
+void GuCreateListFromFile_01() 
+{
+    
+    guUserDataType *current;
+    guUserDataType *head;
+
+
+    head = GuCreateListFromFile();
+    
+    _it_should("Should return \"guOk\" if all parameters are reasonable.", 
+            (1));
+
+    current = head;
+
+    while(current->prev != NULL)
+    {
+      printf("Email: %s \n", current->email);
+      current = current->prev;
+    }
+
+    current = head;
+
+    while(head != NULL)
+    {
+      current = head;
+      head = head->prev;
+      free(current);
+    }
+}
 
 
 //------------------------------------------------
@@ -773,18 +807,21 @@ void run_tests()
   _run_test(GuCheckStringField_04);
   _run_test(GuCheckStringField_05);
   _run_test(GuCheckStringField_06);
+   */
+  _test_start("GuCreateListFromFile");
+  _run_test(GuCreateListFromFile_01); 
+  
+   /*
+  _test_start("GuCreateNickname");
+  _run_test(GuCreateNickname_01);
+  _run_test(GuCreateNickname_02);
 
   _test_start("GuCreateRandomString");
   _run_test(GuCreateRandomString_01);
   _run_test(GuCreateRandomString_02);
   _run_test(GuCreateRandomString_03);    
   _run_test(GuCreateRandomString_04); 
-  //TODO: Use string checker function for better tests
-  
-
-  _test_start("GuCreateNickname");
-  _run_test(GuCreateNickname_01);
-  _run_test(GuCreateNickname_02);
+  //TODO: Use string checker function for better tests  
 
   _test_start("GuEncodePasswordWithSpecificAlgorithm");
   _run_test(GuEncodePasswordWithSpecificAlgorithm_01);

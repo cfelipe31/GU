@@ -13,6 +13,9 @@
  *
  */
 
+#define AMBIENTE_EXECUCAO_INVALIDO      1
+#define COMPRIMENTO_MAXIMO_LINGUA       20
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -23,11 +26,8 @@
 #include "guConfig.h"
 
 
-#define AMBIENTE_EXECUCAO_INVALIDO 	1
-#define COMPRIMENTO_MAXIMO_LINGUA	20
 
-int
-main (int argc, char **argv)
+int main(int argc, char **argv)
 {
   environmentType ambiente;
   char languageString [COMPRIMENTO_MAXIMO_LINGUA + 1];
@@ -118,6 +118,7 @@ main (int argc, char **argv)
 
   mlCgiFreeResources ();
   return ML_CGI_OK;
+
 }
 
 /* $RCSfile$ */

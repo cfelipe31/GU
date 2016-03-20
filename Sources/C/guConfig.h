@@ -1,4 +1,4 @@
-/*
+c/*
  *Universidade Federal do Rio de Janeiro
  *Escola Politecnica
  *Departamento de Eletronica e de Computacao
@@ -33,9 +33,17 @@
 #define GU_HELP_URL  									"./guShowWebHelp.cgi" 
 #endif /* #ifndef GU_HELP_URL */
 
+#ifndef GU_INVITED_USERS_DATA_FILENAME
+#define GU_INVITED_USERS_DATA_FILENAME 					"invited.users" 
+#endif /* #ifndef GU_INVITED_USERS_DATA_FILENAME */
+
 #ifndef GU_LICENSE_URL
 #define GU_LICENSE_URL  								"./guShowLicense.cgi" 
 #endif /* #ifndef GU_LICENSE_URL */
+
+#ifndef GU_LOCKED_USERS_DATA_FILENAME
+#define GU_LOCKED_USERS_DATA_FILENAME 					"locked_users" 
+#endif /* #ifndef GU_LOCKED_USERS_DATA_FILENAME */
 
 #ifndef GU_LOGIN_URL
 #define GU_LOGIN_URL									"./CGIs/guLogin.cgi"
@@ -61,13 +69,17 @@
 #define GU_REGISTER_FORM_URL  							"./guShowRequestRegistrationForm.cgi" 
 #endif /* #ifndef GU_REGISTER_FORM_URL */
 
+#ifndef GU_REQUESTING_USERS_DATA_FILENAME
+#define GU_REQUESTING_USERS_DATA_FILENAME 				"requesting.users" 
+#endif /* #ifndef GU_REQUESTING_USERS_DATA_FILENAME */
+
 #ifndef GU_USER_ABEYANCES_FILENAME
 #define GU_USER_ABEYANCES_FILENAME  					"users.abeyances" 
 #endif /* #ifndef GU_USER_ABEYANCES_FILENAME */
 
-#ifndef GU_USER_DATA_FILENAME
-#define GU_USER_DATA_FILENAME 							"users" 
-#endif /* #ifndef GU_USER_DATA_FILENAME */
+#ifndef GU_USERS_DATA_FILENAME
+#define GU_USERS_DATA_FILENAME 							"users" 
+#endif /* #ifndef GU_USERS_DATA_FILENAME */
 
 #ifndef GU_WEB_SERVER_URL
 #define GU_WEB_SERVER_URL 								"http://www02.del.ufrj.br/~carlos.oliveira/GU/index_en-us.html"

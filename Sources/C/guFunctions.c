@@ -11,7 +11,6 @@
  */
 
 
-#define GU_DEBUG
 #define _XOPEN_SOURCE   600
 
 /*sprintf*/
@@ -26,6 +25,8 @@
 #include <unistd.h>
 
 #include "guFunctions.h"
+#include "guConfig.h"          // Admin id, GU_USER_DATA_FILENAME
+
 
 guErrorType 
 GuCheckEmail (char *validatedString, char *validChars,
@@ -259,6 +260,68 @@ GuCheckStringField (char *validatedString, char *validChars,
   
   return guOk;
 }
+
+
+//TODO: ERROR CHECKING
+//TODO: CORRECT BUFFER SIZE
+guUserDataType *GuCreateListFromFile ()
+{
+  FILE *usersFile;
+  char buffer[2000];
+  guUserDataType *current = NULL; 
+  guUserDataType *auxUser = NULL; 
+  guUserDataType *head = NULL;
+  char *auxString;
+  unsigned index;
+
+  usersFile = fopen(GU_USER_DATA_FILENAME, "r");
+  
+
+  //Go through each user
+  while(fgets(buffer, 2000, usersFile) != NULL)
+  {
+    auxUser = (guUserDataType *) malloc (sizeof(guUserDataType));
+   
+    auxString = strtok(buffer, ":");
+
+    auxUser->id = strtoul(auxString, NULL, 0);
+      
+    auxString = strtok(NULL, ":");
+
+    strcpy(auxUser->nickname, auxString);
+
+    auxString = strtok(NULL, ":");
+
+    strcpy(auxUser->password, auxString);
+
+    auxString = strtok(NULL, ":");
+
+    auxUser->profile = strtoul(auxString, NULL, 0);
+
+    auxString = strtok(NULL, ":");
+
+    strcpy(auxUser->username, auxString);
+
+    auxString = strtok(NULL, ":");
+
+    strcpy(auxUser->email, auxString);
+
+    if(head == NULL)
+    {
+      head = auxUser;
+    }
+    else
+    {
+      head->next = auxUser;
+      auxUser->prev = head;
+      head = auxUser;
+    }
+
+  }
+
+  return head;
+}
+
 
 guErrorType 
 GuCreateRandomString (char *validChar, unsigned long stringLength, char *generatedString)
