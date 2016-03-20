@@ -65,9 +65,9 @@
 #define GU_USER_ABEYANCES_FILENAME  					"users.abeyances" 
 #endif /* #ifndef GU_USER_ABEYANCES_FILENAME */
 
-#ifndef GU_USER_DATA_FILENAME
-#define GU_USER_DATA_FILENAME 							"users" 
-#endif /* #ifndef GU_USER_DATA_FILENAME */
+#ifndef GU_USERS_DATA_FILENAME
+#define GU_USERS_DATA_FILENAME 							"users" 
+#endif /* #ifndef GU_USERS_DATA_FILENAME */
 
 #ifndef GU_WEB_SERVER_URL
 #define GU_WEB_SERVER_URL 								"http://www02.del.ufrj.br/~carlos.oliveira/GU/index_en-us.html"
