@@ -136,7 +136,6 @@ guErrorType GuAddUser(guUserDataType *user)
 
     if(strcmp(user->password, ""))
     {
-      printf("User is added\n");
       returnCode = GuCreateRandomString(GU_VALID_SALT_CHARACTERS, GU_SHA512_SALT_LENGTH, salt);
       
       if(returnCode)
@@ -158,7 +157,6 @@ guErrorType GuAddUser(guUserDataType *user)
     }
     else
     { 
-      printf("User is invited\n");
       //Add user
 
       strcpy(tempPassword, "123456");
