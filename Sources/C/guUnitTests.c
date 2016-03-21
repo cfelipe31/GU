@@ -25,6 +25,30 @@
 //EDIT: This is not a bug, pointers in C are NOT guaranted to
 // be initialied as NULL!
 
+
+//------------------------------------------------
+// GuAcceptInvite()                      
+//------------------------------------------------
+
+void GuAcceptInvite_01() 
+{
+    
+  guUserDataType *userPointer;
+  char *tempPassword = "123456";
+ 
+  guUserDataType user = {6 , guUsers, "Carlos Felipe Domingues e Oliveira", 
+                        "plinio.almeida", "123456789", "123456789","cfelipe.domingues@gmail.com",
+                        "cfelipe.domingues@gmail.com", NULL, NULL};
+
+  userPointer = &user;
+
+
+  _it_should("Should return \"guOk\" if user exist in invite file and password is correct.", 
+    (GuAcceptInvite(tempPassword,userPointer) == guOk));
+}
+
+
+
 //-------------------------------------------------
 // GuAddUser()                        
 //-------------------------------------------------
@@ -46,6 +70,8 @@ void GuAddUser_01()
 
   //The "remove" function deletes a file
   remove("users");
+  remove("invited.users");
+
 
   userPointer = &user;
 
@@ -60,7 +86,7 @@ void GuAddUser_01()
   _it_should("If the file \"users\" does not exist, it should be created and it should contain the admin data.", 
     (returnValue == guOk));
 
-  printf(KCYN "    File content:\n    %s\n" KNRM, fileContent);
+  //printf(KCYN "    File content:\n    %s\n" KNRM, fileContent);
 
 }
 
@@ -112,12 +138,124 @@ void GuAddUser_02()
   _it_should("If the file \"users\" does exist, it should add all the requisited users that have a non-null password field.", 
     (returnValue == guOk));
 
-  printf(KCYN "    File content:\n    %s\n" KNRM, fileContent);
+  //printf(KCYN "    File content:\n    %s\n" KNRM, fileContent);
 
   free(fileContent);
 }
 
 
+void GuAddUser_03()
+{
+  FILE *usersFile;
+
+  char fileContent[1000];
+
+  guUserDataType *userPointer;
+ 
+  guUserDataType user1 = {1 , guUsers, "Joao Flores Neves", 
+                         "", "", "","joaoflores@gmail.com",
+                         "joaoflores@gmail.com", NULL, NULL};
+
+  guUserDataType user2 = {1 , guUsers, "Junior Botelho Silva", 
+                         "", "", "","juniorbotelho@gmail.com",
+                         "juniorbotelho@gmail.com", NULL, NULL};
+
+  guUserDataType user3 = {1 , guUsers, "Fabio Mendes Peixoto", 
+                         "", "", "","fabiopeixoto@gmail.com",
+                         "fabiopeixoto@gmail.com", NULL, NULL};
+
+  guErrorType returnValue = 0;
+
+  userPointer = &user1;
+
+  GuAddUser(userPointer);
+
+  userPointer = &user2;
+
+  GuAddUser(userPointer);
+
+  userPointer = &user3;
+
+  GuAddUser(userPointer);
+
+  usersFile = fopen (GU_INVITED_USERS_DATA_FILENAME, "r");
+
+  fscanf (usersFile, "%s", fileContent);
+
+  fclose (usersFile);
+
+  _it_should("If the file password is blank, user should also be added to the invited.users file", 
+    (returnValue == guOk));
+
+  //printf(KCYN "    File content:\n    %s\n" KNRM, fileContent);
+
+}
+
+//------------------------------------------------
+// GuAuthenticateUser()                      
+//------------------------------------------------
+
+void GuAuthenticateUser_01() 
+{
+    
+  FILE *usersFile;
+
+  char fileContent[1000];
+
+  guUserDataType *userPointer;
+ 
+  guUserDataType user = {1 , guUsers, "Carlos Felipe Domingues e Oliveira", 
+                        "plinio.almeida", "123456", "123456","cfelipe.domingues@gmail.com",
+                        "cfelipe.domingues@gmail.com", NULL, NULL};
+
+  userPointer = &user;
+
+
+  _it_should("Should return \"guOk\" if user exist and password is correct.", 
+    (GuAuthenticateUser(userPointer) == guOk));
+}
+
+
+void GuAuthenticateUser_02() 
+{
+    
+  FILE *usersFile;
+
+  char fileContent[1000];
+
+  guUserDataType *userPointer;
+ 
+  guUserDataType user = {1 , guUsers, "Carlos Felipe Domingues e Oliveira", 
+                        "machado.assis", "123456", "123456","cfelipe.domingues@gmail.com",
+                        "cfelipe.domingues@gmail.com", NULL, NULL};
+
+  userPointer = &user;
+
+
+  _it_should("Should return \"guUserNotFound\" if user does not exist.", 
+    (GuAuthenticateUser(userPointer) == guUserNotFound));
+}
+
+
+void GuAuthenticateUser_03() 
+{
+    
+  FILE *usersFile;
+
+  char fileContent[1000];
+
+  guUserDataType *userPointer;
+ 
+  guUserDataType user = {1 , guUsers, "Carlos Felipe Domingues e Oliveira", 
+                        "plinio.almeida", "1234567", "1234567","cfelipe.domingues@gmail.com",
+                        "cfelipe.domingues@gmail.com", NULL, NULL};
+
+  userPointer = &user;
+
+
+  _it_should("Should return \"guPasswordsDontMatch\" if user exists but password is incorrect.", 
+    (GuAuthenticateUser(userPointer) == guPasswordsDontMatch));
+}
 
 
 
@@ -438,18 +576,17 @@ void GuCreateListFromFile_01()
 
     head = GuCreateListFromFile();
     
-    _it_should("Should return \"guOk\" if all parameters are reasonable.", 
-            (1));
+    _it_should("Should return a non-null pointer if all parameters are reasonable.", 
+            (head !=NULL));
 
     current = head;
-
+    printf(KCYN "    Emails:\n" KNRM);
     while(current->prev != NULL)
     {
-      printf("Email: %s \n", current->email);
+
+      printf(KCYN "    %s\n" KNRM, current->email);
       current = current->prev;
     }
-
-    printf("Email: %s \n", current->email);
 
     current = head;
 
@@ -771,6 +908,13 @@ void run_tests()
   _test_start("GuAddUser");
   _run_test(GuAddUser_01); 
   _run_test(GuAddUser_02); 
+  _run_test(GuAddUser_03); 
+
+  _test_start("GuAuthenticateUser");
+  _run_test(GuAuthenticateUser_01); 
+  _run_test(GuAuthenticateUser_02); 
+  _run_test(GuAuthenticateUser_03); 
+
 
    /*
   _test_start("GuCheckEmail");
@@ -810,6 +954,9 @@ void run_tests()
 
   _test_start("GuCreateListFromFile");
   _run_test(GuCreateListFromFile_01); 
+
+  _test_start("GuAcceptInvite");
+  _run_test(GuAcceptInvite_01); 
   
   /*
   _test_start("GuCreateRandomString");

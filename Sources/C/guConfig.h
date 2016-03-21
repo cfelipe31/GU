@@ -49,6 +49,10 @@
 #define GU_LOST_PW_FORM_URL  							"./guShowRequestPasswordReset.cgi" 
 #endif /* #ifndef GU_LOST_PW_URL */
 
+#ifndef GU_NEW_USER_REQUEST_VALIDITY
+#define GU_NEW_USER_REQUEST_VALIDITY  					72 
+#endif /* #ifndef GU_NEW_USER_REQUEST_VALIDITY */
+
 #ifndef GU_PRIVATE_ROOT_DIRECTORY
 #define GU_PRIVATE_ROOT_DIRECTORY          				"/users/carlos.oliveira/private/EEL270/2015-2/GU"    
 #endif /* #ifndef GU_PRIVATE_ROOT_DIRECTORY */
@@ -60,10 +64,6 @@
 #ifndef GU_REGISTER_FORM_URL
 #define GU_REGISTER_FORM_URL  							"./guShowRequestRegistrationForm.cgi" 
 #endif /* #ifndef GU_REGISTER_FORM_URL */
-
-#ifndef GU_USER_ABEYANCES_FILENAME
-#define GU_USER_ABEYANCES_FILENAME  					"users.abeyances" 
-#endif /* #ifndef GU_USER_ABEYANCES_FILENAME */
 
 #ifndef GU_USERS_DATA_FILENAME
 #define GU_USERS_DATA_FILENAME 							"users" 

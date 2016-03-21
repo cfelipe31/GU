@@ -20,7 +20,8 @@ typedef enum {guOk, guNullPointer, guZeroValue, guMaxMinInvalid,
               guTooManyDots, guTooManyAmpersands,guZeroLength,
               guNoSurname, guInvalidCryptAlgorithm, guInvalidSalt,
               guPasswordsDontMatch, guBadConfirmationEmail,
-              guBadConfirmationPassword} guErrorType;
+              guBadConfirmationPassword, guUserNotFound, guEmailFailed,
+              guBadConfirmationUsername, guErrorOpeningFile} guErrorType;
 
 char *
 GuGetCliErrorMessage (guErrorType, guLanguageType);

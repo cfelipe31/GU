@@ -17,9 +17,11 @@
 UNAME := $(shell uname)
 
 CGILIB = 0
+SENDMAILLIB = 0
 
 ifeq ($(UNAME), FreeBSD)
   CGILIB = ./Libraries/libmlcgi.a.FreeBSD.7.x
+  SENDMAILLIB = ./Libraries/libsendmail.a.FreeBSD.6.2
 endif
  
 ifeq ($(UNAME), Linux)
@@ -27,11 +29,13 @@ ifeq ($(UNAME), Linux)
 
   ifeq ($(DISTRO), Ubuntu)
     CGILIB = ./Libraries/libmlcgi.a.Ubuntu.12.x
+    SENDMAILLIB = ./Libraries/libsendmail.a.Ubuntu.12.x
     $(Ubuntu) 
   endif
 
   ifeq ($(DISTRO), CentOS)
     CGILIB = ./Libraries/libmlcgi.a.CentOS.5.x
+    SENDMAILLIB = ./Libraries/libsendmail.a.CentOS.5.0
   endif
 
 endif
@@ -98,9 +102,9 @@ GUCGISHOWREQUESTREGOBJS = guCgiShowRequestRegistrationForm.c guUserInterface.o g
 
 GUCGISHOWREQUESTPWOBJS = guCgiShowRequestPasswordReset.c guUserInterface.o guFunctions.o
 
-GUOBJS = gu.o guFunctions.o 
+GUOBJS = gu.o guFunctions.o guErrors.o guUserInterface.o guAddUser.o
 
-GUUNITTESTSOBJS = guUnitTests.o guFunctions.o guAddUser.o
+GUUNITTESTSOBJS = guUnitTests.o guFunctions.o guAddUser.o 
 
 
 ##############################################
@@ -140,10 +144,10 @@ guShowRequestPasswordReset.cgi:  $(GUCGISHOWREQUESTPWOBJS)
 	$(LD) $(LFLAGS) -o $@ $(GUCGISHOWREQUESTPWOBJS) $(CGILIB) -lcrypt
 
 gu:  $(GUOBJS)	
-	$(LD) $(LFLAGS) -o $@ $(GUOBJS) -lcrypt
+	$(LD) $(LFLAGS) -o $@ $(GUOBJS) $(SENDMAILLIB) -lcrypt
 
 guUnitTests:  $(GUUNITTESTSOBJS)  
-	$(LD) $(LFLAGS) -o $@ $(GUUNITTESTSOBJS) -lcrypt
+	$(LD) $(LFLAGS) -o $@ $(GUUNITTESTSOBJS) $(SENDMAILLIB) -lcrypt
 
 all: $(EXECS)
 

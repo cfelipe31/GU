@@ -19,6 +19,12 @@
 #include "guTypes.h"
 
 
+guErrorType 
+GuAcceptInvite (char *, guUserDataType *);
+
+guErrorType
+GuAuthenticateUser (guUserDataType *);
+
 guErrorType
 GuCheckEmail(char *, char *, size_t, size_t);
 
@@ -66,6 +72,11 @@ GuGetCryptAlgorithm (char *, guCryptAlgorithms *);
 guLanguageType 
 GuGetLanguageIndex(char *);
 
+guProfileType
+GuGetProfileIndex(char *);
+
+guErrorType
+GuWriteUsersListToFile(guUserDataType *);
 
 #endif /* #ifndef GU_FUNCTIONS_H */
 

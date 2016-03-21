@@ -30,6 +30,152 @@
 #include "guFunctions.h"
 #include "guConfig.h"
 
+
+guErrorType 
+GuAcceptInvite (char *tempPassword, guUserDataType *user)
+{
+  FILE *invitesFile;
+  FILE *tempFile;
+
+  char buffer[2000];
+  char auxBuffer[2000];
+  char *auxString;
+  unsigned line = 0;
+  unsigned found = 0;
+  guUserIdentifierType id;
+  guUserDataType *current;
+  guUserDataType *head;
+  guErrorType returnValue;
+
+  tempFile = fopen("temp.bak", "w");
+
+  invitesFile = fopen(GU_INVITED_USERS_DATA_FILENAME, "r");
+
+  //Go through each invited user
+  while(fgets(buffer, 2000, invitesFile) != NULL)
+  {
+
+    strcpy(auxBuffer,buffer);
+    auxString = strtok(buffer, ":");
+    id = strtoul(auxString, NULL, 0);
+    
+    //User Found!
+    if(id == user->id)
+    {
+      found = 1;
+
+      //password
+      auxString = strtok(NULL, ":");
+      break;
+    }
+    else
+    {
+      fputs (auxBuffer,tempFile);
+    }
+
+    line++;
+  }
+  fclose(invitesFile);
+  fclose(tempFile);
+
+  rename ("temp.bak", GU_INVITED_USERS_DATA_FILENAME);
+
+  printf("Line:%u\n", line);
+
+  if (found == 0)
+    return guUserNotFound;
+
+  printf("Stored temp password: %s\n", auxString);
+
+  if(strcmp(tempPassword, auxString) != 0)
+    return guPasswordsDontMatch;
+
+
+  head = GuCreateListFromFile();
+  current = head;
+
+
+  while(current->prev != NULL)
+  {  
+    printf("User:%s\n", current->nickname);
+    if(current->id == user->id)
+    { 
+      printf("ID found!\n");
+      strcpy(current->password, user->password);
+      printf("PW: %s\n", current->password);
+    }
+
+    current = current->prev;
+  }
+
+  printf("User:%s\n", current->nickname);
+  if(current->id == user->id)
+  {
+    strcpy(current->password, user->password);
+  }
+
+  returnValue = GuWriteUsersListToFile(current);
+
+  if (returnValue != 0)
+    return returnValue;
+  
+  /*
+  while(head != NULL)
+  {
+    current = head;
+    head = head->prev;
+    free(current);
+  }
+    */
+  return guOk;
+
+}
+
+guErrorType
+GuAuthenticateUser (guUserDataType *user)
+{
+  
+  guUserDataType *current;
+  guUserDataType *head;
+  guErrorType returnValue;
+  unsigned found = 0;
+  
+  if (!user)
+    return guNullPointer;
+
+  head = GuCreateListFromFile();
+
+  current = head;
+
+
+
+  //If user nickname is not first nickname
+  do
+  {
+  
+    if(!strcmp(current->nickname, user->nickname))
+    {
+      found = 1;
+      break;
+    }
+
+    current = current->prev;
+  
+  }while(current != NULL);
+
+
+  if(found == 0)
+    return guUserNotFound;
+
+  returnValue = GuCheckPassword (user->password, current->password);
+
+  if(returnValue)
+    return returnValue;
+
+  return guOk;
+}
+
+
 guErrorType 
 GuCheckEmail (char *validatedString, char *validChars,
               size_t minLength, size_t maxLength)
@@ -289,8 +435,6 @@ guUserDataType *GuCreateListFromFile ()
     auxString = strtok(NULL, ":");
 
     strcpy(auxUser->nickname, auxString);
-    
-    printf("Nickname: %s\n",auxString);
 
     auxString = strtok(NULL, ":");
 
@@ -308,14 +452,15 @@ guUserDataType *GuCreateListFromFile ()
 
     strcpy(auxUser->email, auxString);
 
+    auxUser->next = NULL;
+    auxUser->prev = NULL;
+
     if(head == NULL)
     {
-      printf("oi\n");
       head = auxUser;
     }
     else
     {
-      printf("oi2\n");
       head->next = (guUserDataType *) auxUser;
       auxUser->prev = (guUserDataType *) head;
       head = auxUser;
@@ -583,6 +728,53 @@ GuGetLanguageIndex(char * language)
   return guEnglish;
 }
 
+guProfileType
+GuGetProfileIndex(char *profile)
+{
+  if(!profile)
+    return guUsers;
 
+  if(strcmp(profile, "administrator") == 0)
+  {
+    return guAdministrators;
+  }
+
+  return guUsers;
+}
+
+guErrorType GuWriteUsersListToFile (guUserDataType *user)
+{
+  FILE *usersDataFile;
+  
+  if (!user)
+    return guNullPointer;
+  
+  remove("users");
+
+
+  if (!(usersDataFile = fopen(GU_USERS_DATA_FILENAME, "w")))
+    return guErrorOpeningFile;
+  
+  while (user->next !=NULL)
+  {
+
+    printf("Current user: %s\n", user->password);
+
+    fprintf(usersDataFile, "%llu:%s:%s:%u:%s:%s:\n", user->id, user->nickname, 
+            user->password, user->profile, user->username, user->email);
+
+    user = user->next;
+  }
+
+
+  printf("Current user: %s\n", user->password);
+  fprintf(usersDataFile, "%llu:%s:%s:%u:%s:%s:", user->id, user->nickname, 
+            user->password, user->profile, user->username, user->email);
+  
+  fclose (usersDataFile);
+  
+  return guOk;
+
+}
                                         
 /* $RCSfile$ */
