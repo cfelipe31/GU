@@ -916,7 +916,7 @@ void run_tests()
   _run_test(GuAuthenticateUser_03); 
 
 
-   /*
+   
   _test_start("GuCheckEmail");
   _run_test(GuCheckEmail_01);
   _run_test(GuCheckEmail_02);
@@ -950,7 +950,7 @@ void run_tests()
   _run_test(GuCheckStringField_04);
   _run_test(GuCheckStringField_05);
   _run_test(GuCheckStringField_06);
-  */
+  
 
   _test_start("GuCreateListFromFile");
   _run_test(GuCreateListFromFile_01); 
@@ -958,7 +958,7 @@ void run_tests()
   _test_start("GuAcceptInvite");
   _run_test(GuAcceptInvite_01); 
   
-  /*
+  
   _test_start("GuCreateRandomString");
   _run_test(GuCreateRandomString_01);
   _run_test(GuCreateRandomString_02);
@@ -986,7 +986,7 @@ void run_tests()
   _run_test(GuGetLanguageIndex_02);
   _run_test(GuGetLanguageIndex_03);
   _run_test(GuGetLanguageIndex_04);
-  */
+  
 
 }
 
