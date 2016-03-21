@@ -13,7 +13,7 @@
 #include "guTypes.h"
 #include "guUserInterface.h"
 
-static char *guCliUserInterfaceMessages[2][20] = {
+static char *guCliUserInterfaceMessages[2][21] = {
                                                   {"Welcome to GNUber! - The free Open Source carpooling app\n",
                                                    "by",
                                                    "Username",
@@ -33,7 +33,8 @@ static char *guCliUserInterfaceMessages[2][20] = {
                                                    "User authenticated sucessfully!",
                                                    "User added sucessfully!",
                                                    "Please type the new user's password",
-                                                   "User invited sucessfully!"
+                                                   "User invited sucessfully!",
+                                                   "Please type your temporary password"
                                                   },
                                                   {"Bem vindo ao GNUber! - O aplicativo de caronas gratuito e Open Source\n",
                                                    "por",
@@ -54,12 +55,13 @@ static char *guCliUserInterfaceMessages[2][20] = {
                                                    "Usuario autenticado com sucesso!",
                                                    "Usuario adicionado com sucesso!",
                                                    "Por favor digite a senha do novo usuario",
-                                                   "Usuario convidado com sucesso!"
+                                                   "Usuario convidado com sucesso!",
+                                                   "Por favor digite sua senha temporaria"
 
                                                   }
                                                 };
 
-static char *guNcursesUserInterfaceMessages[2][20] = {
+static char *guNcursesUserInterfaceMessages[2][21] = {
                                                       {"Welcome to GNUber! - The free Open Source carpooling app\n",
                                                        "by",
                                                        "Username",
@@ -79,7 +81,8 @@ static char *guNcursesUserInterfaceMessages[2][20] = {
                                                        "User authenticated sucessfully!",
                                                        "User added sucessfully!",
                                                        "Please type the new user's password",
-                                                       "User invited sucessfully!"
+                                                       "User invited sucessfully!",
+                                                       "Please type your temporary password"
 
                                                       },
                                                       {"Bem vindo ao GNUber! - O aplicativo de caronas gratuito e Open Source\n",
@@ -100,13 +103,14 @@ static char *guNcursesUserInterfaceMessages[2][20] = {
                                                        "Por favor digite sua senha",
                                                        "Usuario autenticado com sucesso!",
                                                        "Usuario adicionado com sucesso!",
-                                                       "Por favor digite a senha do novo usuario"
-                                                       "Usuario convidado com sucesso!"
+                                                       "Por favor digite a senha do novo usuario",
+                                                       "Usuario convidado com sucesso!",
+                                                       "Por favor digite sua senha temporaria"
 
                                                       }
                                                     };
 
-static char *guWebUserInterfaceMessages[2][20] = {
+static char *guWebUserInterfaceMessages[2][21] = {
                                                   {"Welcome to GNUber! - The free Open Source carpooling app\n",
                                                    "by",
                                                    "Username",
@@ -126,7 +130,8 @@ static char *guWebUserInterfaceMessages[2][20] = {
                                                    "User authenticated sucessfully!",
                                                    "User added sucessfully!",
                                                    "Please type the new user's password",
-                                                   "User invited sucessfully!"
+                                                   "User invited sucessfully!",
+                                                   "Please type your temporary password"
 
 
                                                   },
@@ -150,7 +155,8 @@ static char *guWebUserInterfaceMessages[2][20] = {
                                                    "Usuario autenticado com sucesso!",
                                                    "Usuario adicionado com sucesso!",
                                                    "Por favor digite a senha do novo usuario",
-                                                   "Usuario convidado com sucesso!"
+                                                   "Usuario convidado com sucesso!",
+                                                   "Por favor digite sua senha temporaria"
                                                   },
 
                                                 };

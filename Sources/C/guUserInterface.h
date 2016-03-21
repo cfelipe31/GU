@@ -19,7 +19,8 @@ typedef enum {guWelcomeMessage, guByMessage, guUsernameMessage, guPasswordMessag
               guLoginMessage, guSignUpMessage1, guSignUpMessage2, guSignUpMessage3, 
               guLostPWMessage, guLicenseMessage, guHelpMessage,guLicenseUrl, 
               guConfirmMessage, guRequestMessage, guFriendEmail, guGetPassword,
-              guUserAuthOk,guUserAddOk, guGetNewUserPW, guUserInviteOk} guUserInterfaceMessageNumberType;
+              guUserAuthOk,guUserAddOk, guGetNewUserPW, guUserInviteOk,
+              guGetTempPW} guUserInterfaceMessageNumberType;
 
 char *
 GuGetCliUserInterfaceMessage (guUserInterfaceMessageNumberType, guLanguageType);

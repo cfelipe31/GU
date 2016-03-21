@@ -51,6 +51,8 @@ GuAcceptInvite (char *tempPassword, guUserDataType *user)
 
   invitesFile = fopen(GU_INVITED_USERS_DATA_FILENAME, "r");
 
+  printf("user id: %u\n", user->id);
+
   //Go through each invited user
   while(fgets(buffer, 2000, invitesFile) != NULL)
   {
@@ -86,6 +88,7 @@ GuAcceptInvite (char *tempPassword, guUserDataType *user)
     return guUserNotFound;
 
   printf("Stored temp password: %s\n", auxString);
+  printf("password: %s\n", tempPassword);
 
   if(strcmp(tempPassword, auxString) != 0)
     return guPasswordsDontMatch;

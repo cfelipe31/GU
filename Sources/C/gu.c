@@ -47,15 +47,16 @@ typedef enum
 int
 main (int argc, char **argv)
 {
-  const char *shortOptions = "aChiN";
+  const char *shortOptions = "aChiNt";
 
-  struct option longOptions [6] =
+  struct option longOptions [7] =
   {
     {"add", 0, NULL, 'a'},
     {"Configure", 0, NULL, 'C'},
     {"help", 0, NULL, 'h'},
     {"invite", 0, NULL, 'i'},
     {"Ncurses", 0, NULL, 'N'},
+    {"accept", 0, NULL, 't'},
     {NULL, 0, NULL, 0}
   };
 
@@ -75,7 +76,10 @@ main (int argc, char **argv)
   int shortOption;
   int longOption;
   int optIndex;
-  char *options, *optionValue, *userPassword;
+  unsigned found = 0;
+  char *options, *optionValue, *userPassword, *tempPassword;
+  guUserDataType *current;
+  guUserDataType *head;
 
   /*Language : all functions*/
   char languageString[GU_MAX_USERNAME_LENGTH];
@@ -387,7 +391,6 @@ main (int argc, char **argv)
           printf("%s\n", GuGetCliErrorMessage(returnValue, currentLanguage));
           exit(returnValue);
         }
-        
 
         //Invite user
         //strcpy(auxUser.username, usernameString);
@@ -443,6 +446,82 @@ main (int argc, char **argv)
         }
         /*returnValue = guRunNcursesInterface (GuGetLanguageIndex(languageString), nicknameString);*/
         break;
+      
+      //./gu -t user=junior.silva language=portuguese
+      case 't':
+        printf ("Accept invite\n");
+        while (optind < argc)
+        {
+          options = argv [optind];
+          optIndex =  getsubopt (&options, optName, &optionValue);
+          switch (optIndex)
+          {
+
+            case guUserOpt:
+              printf ("User Executing: \"%s\"\n", optionValue);
+              strcpy (userString, optionValue);
+              break;
+
+            case guLanguageOpt:
+              printf ("Idioma: \"%s\"\n", optionValue);
+              strcpy (languageString, optionValue);
+              break;
+
+            default:
+              printf ("Invalid option: %s\n", argv[optind]);
+          }
+          optind++;
+        }
+
+        //Get language
+        currentLanguage = GuGetLanguageIndex(languageString); 
+
+
+        //Check if user exists and get his/her id
+        head = GuCreateListFromFile();
+
+        current = head;
+    
+        while(current->prev != NULL)
+        {
+          printf("Name: %s\n", current->nickname);
+          if(strcmp(current->nickname, userString) == 0)
+          {
+            printf("User found!\n");
+            auxUser.id = current->id;
+            found =1;
+          }
+          current = current->prev;
+        }
+
+        if(found == 0)
+        {
+          returnValue = guUserNotFound;
+          printf("%s\n", GuGetCliErrorMessage(returnValue, currentLanguage));
+          exit(returnValue);
+        }
+
+        tempPassword = getpass(GuGetCliUserInterfaceMessage(guGetTempPW, currentLanguage));
+        userPassword = getpass(GuGetCliUserInterfaceMessage(guGetNewUserPW, currentLanguage));
+        
+        strcpy(auxUser.password, userPassword);
+        strcpy(auxUser.passwordCheck, userPassword);
+     
+        user = &auxUser;
+        returnValue = GuAcceptInvite(tempPassword,user);
+
+        if(returnValue != 0)
+        {
+          printf("%s\n", GuGetCliErrorMessage(returnValue, currentLanguage));
+          exit(returnValue);
+        }
+
+        printf("%s\n", GuGetCliUserInterfaceMessage(guUserAddOk, currentLanguage));
+
+        return guOk;
+
+        break;
+        /* case 't'*/
 
     } /*switch indiceArgumento*/
   } /* if shortOption */
