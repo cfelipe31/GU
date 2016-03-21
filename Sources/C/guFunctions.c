@@ -51,8 +51,6 @@ GuAcceptInvite (char *tempPassword, guUserDataType *user)
 
   invitesFile = fopen(GU_INVITED_USERS_DATA_FILENAME, "r");
 
-  printf("user id: %u\n", user->id);
-
   //Go through each invited user
   while(fgets(buffer, 2000, invitesFile) != NULL)
   {
@@ -82,13 +80,8 @@ GuAcceptInvite (char *tempPassword, guUserDataType *user)
 
   rename ("temp.bak", GU_INVITED_USERS_DATA_FILENAME);
 
-  printf("Line:%u\n", line);
-
   if (found == 0)
     return guUserNotFound;
-
-  printf("Stored temp password: %s\n", auxString);
-  printf("password: %s\n", tempPassword);
 
   if(strcmp(tempPassword, auxString) != 0)
     return guPasswordsDontMatch;
@@ -100,18 +93,14 @@ GuAcceptInvite (char *tempPassword, guUserDataType *user)
 
   while(current->prev != NULL)
   {  
-    printf("User:%s\n", current->nickname);
     if(current->id == user->id)
     { 
-      printf("ID found!\n");
       strcpy(current->password, user->password);
-      printf("PW: %s\n", current->password);
     }
 
     current = current->prev;
   }
 
-  printf("User:%s\n", current->nickname);
   if(current->id == user->id)
   {
     strcpy(current->password, user->password);
@@ -761,7 +750,6 @@ guErrorType GuWriteUsersListToFile (guUserDataType *user)
   while (user->next !=NULL)
   {
 
-    printf("Current user: %s\n", user->password);
 
     fprintf(usersDataFile, "%llu:%s:%s:%u:%s:%s:\n", user->id, user->nickname, 
             user->password, user->profile, user->username, user->email);
@@ -769,8 +757,6 @@ guErrorType GuWriteUsersListToFile (guUserDataType *user)
     user = user->next;
   }
 
-
-  printf("Current user: %s\n", user->password);
   fprintf(usersDataFile, "%llu:%s:%s:%u:%s:%s:", user->id, user->nickname, 
             user->password, user->profile, user->username, user->email);
   
